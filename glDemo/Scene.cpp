@@ -338,4 +338,17 @@ void Scene::Init()
 	{
 		(*it)->Init(this);
 	}
+
+}
+
+void Scene::CycleCamera() 
+{
+	m_useCameraIndex++;
+	m_useCameraIndex = m_useCameraIndex % m_useCameraIndex;
+	
+	auto it = m_Cameras.begin();
+	std::advance(it, m_useCameraIndex);
+
+	m_useCamera = *it;
+
 }

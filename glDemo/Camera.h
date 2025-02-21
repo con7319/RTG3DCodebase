@@ -60,6 +60,8 @@ public:
 	//set up shader values for when using this camera
 	virtual void SetRenderValues(unsigned int _prog);
 
+
+
 protected:
 
 	//standard transforms needed to render with this a basic camera
@@ -78,5 +80,7 @@ protected:
 
 	string m_name;
 	string m_type;
+
+	float aspect_ratio;
 };
 

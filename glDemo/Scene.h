@@ -47,6 +47,8 @@ public:
 	//initialise links between items in the scene
 	void Init();
 
+	void CycleCamera();
+
 protected:
 
 	//data structures containing pointers to all our stuff
