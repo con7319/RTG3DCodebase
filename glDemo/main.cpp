@@ -41,7 +41,7 @@ vec3 g_beastPos = vec3(2.0f, 0.0f, 0.0f);
 float g_beastRotation = 0.0f;
 AIMesh* g_planetMesh = nullptr;
 
-int g_showing = 0;
+int g_showing = 1;
 int g_NumExamples = 3;
 
 //Global Game Object
