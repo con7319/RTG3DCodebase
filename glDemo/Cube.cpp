@@ -12,38 +12,38 @@ static float positionArray[] = {
 
 	//top
 	-1.0f, 1.0f, 1.0f, 1.0f,    //top front left,0
-	-1.0f, 1.0f, -1.0f, 1.0f,    //top back left,1
-	1.0f, 1.0f, -1.0f, 1.0f,    //top front right,2
-	1.0f, 1.0f, 1.0f, 1.0f,        //top back right,3
+	-1.0f, 1.0f, -1.0f, 1.0f,   //top back left,1
+	1.0f, 1.0f, -1.0f, 1.0f,    //top back right,2
+	1.0f, 1.0f, 1.0f, 1.0f,     //top front right,3
 
 	//bottom
 	-1.0f, -1.0f, 1.0f, 1.0f,    //bottom front left,4
-	-1.0f, -1.0f, -1.0f, 1.0f,    //bottom back left,5
-	1.0f, -1.0f, -1.0f, 1.0f,    //bottom front right,6
-	1.0f, -1.0f, 1.0f, 1.0f,    //bottom back right,7
+	-1.0f, -1.0f, -1.0f, 1.0f,   //bottom back left,5
+	1.0f, -1.0f, -1.0f, 1.0f,    //bottom back right,6
+	1.0f, -1.0f, 1.0f, 1.0f,     //bottom front right,7
 
 	//right
 	1.0f, 1.0f, -1.0f, 1.0f,    //top front right,8
-	1.0f, 1.0f, 1.0f, 1.0f,        //top back right,9
-	1.0f, -1.0f, -1.0f, 1.0f,    //bottom front right,10
+	1.0f, 1.0f, 1.0f, 1.0f,     //top back right,9
+	1.0f, -1.0f, -1.0f, 1.0f,   //bottom front right,10
 	1.0f, -1.0f, 1.0f, 1.0f,    //bottom back right,11
 
 	//left
 	-1.0f, 1.0f, 1.0f, 1.0f,    //top front left,12
-	-1.0f, 1.0f, -1.0f, 1.0f,    //top back left,13
-	-1.0f, -1.0f, 1.0f, 1.0f,    //bottom front left,14
-	-1.0f, -1.0f, -1.0f, 1.0f,    //bottom back left,15
+	-1.0f, 1.0f, -1.0f, 1.0f,   //top back left,13
+	-1.0f, -1.0f, 1.0f, 1.0f,   //bottom front left,14
+	-1.0f, -1.0f, -1.0f, 1.0f,  //bottom back left,15
 
 	//front
 	-1.0f, 1.0f, 1.0f, 1.0f,    //top front left,16
-	1.0f, 1.0f, 1.0f, 1.0f,    //top front right,17
-	-1.0f, -1.0f, 1.0f, 1.0f,    //bottom front left,18
+	1.0f, 1.0f, 1.0f, 1.0f,		//top front right,17
+	-1.0f, -1.0f, 1.0f, 1.0f,   //bottom front left,18
 	1.0f, -1.0f, 1.0f, 1.0f,    //bottom front right,19
 
 	//back
 	-1.0f, 1.0f, -1.0f, 1.0f,    //top back left,20
-	1.0f, 1.0f, -1.0f, 1.0f,        //top back right,21
-	-1.0f, -1.0f, -1.0f, 1.0f,    //bottom back left,22
+	1.0f, 1.0f, -1.0f, 1.0f,     //top back right,21
+	-1.0f, -1.0f, -1.0f, 1.0f,   //bottom back left,22
 	1.0f, -1.0f, -1.0f, 1.0f,    //bottom back right,23
 
 

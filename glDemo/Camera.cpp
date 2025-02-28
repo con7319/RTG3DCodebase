@@ -35,8 +35,10 @@ void Camera::Init(float _screenWidth, float _screenHeight, Scene* _scene)
 /////////////////////////////////////////////////////////////////////////////////////
 // Update() - 
 /////////////////////////////////////////////////////////////////////////////////////
-void Camera::Tick(float _dt)
+void Camera::Tick(float _dt, float _width, float _height)
 {
+	aspect_ratio = _width / _height;
+
 	m_viewMatrix = glm::lookAt(m_pos, m_lookAt, vec3(0, 1, 0));
 	m_projectionMatrix = glm::perspective(glm::radians(m_fov), aspect_ratio, m_near, m_far);
 }

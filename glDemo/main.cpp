@@ -51,6 +51,9 @@ Scene* g_Scene = nullptr;
 const unsigned int g_initWidth = 512;
 const unsigned int g_initHeight = 512;
 
+float _initWidth = g_initWidth;
+float _initHeight = g_initHeight;
+
 #pragma endregion
 
 
@@ -298,8 +301,8 @@ void updateScene()
 		g_gameClock->tick();
 		tDelta = (float)g_gameClock->gameTimeDelta();
 	}
-
-	g_Scene->Update(tDelta);
+	
+	g_Scene->Update(tDelta, _initWidth, _initHeight);
 }
 
 
@@ -314,6 +317,9 @@ void resizeWindow(GLFWwindow* _window, int _width, int _height)
 
 		g_mainCamera->setAspect((float)_width / (float)_height);
 	}
+	
+	_initWidth = _width;
+	_initHeight = _height;
 
 	glViewport(0, 0, _width, _height);		// Draw into entire window
 }
