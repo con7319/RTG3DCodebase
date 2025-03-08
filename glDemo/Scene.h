@@ -52,6 +52,7 @@ public:
 protected:
 
 	//data structures containing pointers to all our stuff
+	int count;
 	int m_numCameras = 0;
 	int m_numLights = 0;
 	int m_numGameObjects = 0;

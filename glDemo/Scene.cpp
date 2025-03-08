@@ -179,176 +179,184 @@ void Scene::SetShaderUniforms(GLuint _shaderprog)
 void Scene::Load(ifstream& _file)
 {
 	string dummy;
-	int count;
+	count = 0;
 
-	_file >> dummy >> count; _file.ignore(256, '\n');
-
-	if (dummy == "CAMERAS")
+	while (!_file.eof()) //end check
 	{
-		//load Cameras
-		m_numCameras = count;
-		//_file >> dummy >> m_numCameras; _file.ignore(256, '\n');
+		_file >> dummy >> count;
+		_file.ignore(256, '\n');
 
-		cout << "CAMERAS : " << m_numCameras << endl;
-		for (int i = 0; i < m_numCameras; i++)
+
+		if (dummy == "CAMERAS")
 		{
-			//skip {
-			_file.ignore(256, '\n');
-			cout << "{\n";
+			//load Cameras
+			m_numCameras = count;
+			//_file >> dummy >> m_numCameras; _file.ignore(256, '\n');
 
-			string type;
-			_file >> dummy >> type; _file.ignore(256, '\n');
-			Camera* newCam = CameraFactory::makeNewCam(type);
-			newCam->Load(_file);
+			std::cout << "CAMERAS : " << m_numCameras << endl;
+			for (int i = 0; i < m_numCameras; i++)
+			{
+				//skip {
+				_file.ignore(256, '\n');
+				std::cout << "{\n";
 
-			m_Cameras.push_back(newCam);
+				string type;
+				_file >> dummy >> type; _file.ignore(256, '\n');
+				Camera* newCam = CameraFactory::makeNewCam(type);
+				newCam->Load(_file);
 
-			//skip }
-			_file.ignore(256, '\n');
-			cout << "}\n";
+				m_Cameras.push_back(newCam);
+
+				//skip }
+				_file.ignore(256, '\n');
+				std::cout << "}\n";
+			}
+
+			std::cout << endl << endl;
+
 		}
 
-		cout << endl << endl;
-
-	}
-	
-	_file >> dummy >> count; _file.ignore(256, '\n');
-	//load Lights
-	if (dummy == "LIGHTS") 
-	{
-		m_numLights = count;
-
-		//_file >> dummy >> m_numLights; _file.ignore(256, '\n');
-		cout << "LIGHTS : " << m_numLights << endl;
-		for (int i = 0; i < m_numLights; i++)
+		//_file >> dummy >> count; _file.ignore(256, '\n');
+		//load Lights
+		else if (dummy == "LIGHTS")
 		{
-			//skip {
-			_file.ignore(256, '\n');
-			cout << "{\n";
+			m_numLights = count;
 
-			string type;
-			_file >> dummy >> type; _file.ignore(256, '\n');
-			Light* newLight = LightFactory::makeNewLight(type);
-			newLight->Load(_file);
+			//_file >> dummy >> m_numLights; _file.ignore(256, '\n');
+			std::cout << "LIGHTS : " << m_numLights << endl;
+			for (int i = 0; i < m_numLights; i++)
+			{
+				//skip {
+				_file.ignore(256, '\n');
+				std::cout << "{\n";
 
-			m_Lights.push_back(newLight);
+				string type;
+				_file >> dummy >> type; _file.ignore(256, '\n');
+				Light* newLight = LightFactory::makeNewLight(type);
+				newLight->Load(_file);
 
-			//skip }
-			_file.ignore(256, '\n');
-			cout << "}\n";
-		}
-	}
+				m_Lights.push_back(newLight);
 
-	cout << endl << endl;
-
-	_file >> dummy >> count; _file.ignore(256, '\n');
-
-	if (dummy == "MODELS")
-	{
-
-		//load Models
-		//_file >> dummy >> m_numModels; _file.ignore(256, '\n');
-		m_numModels = count;
-		cout << "MODELS : " << m_numModels << endl;
-		for (int i = 0; i < m_numModels; i++)
-		{
-			//skip {
-			_file.ignore(256, '\n');
-			cout << "{\n";
-
-			string type;
-			_file >> dummy >> type; _file.ignore(256, '\n');
-			Model* newModel = ModelFactory::makeNewModel(type);
-			newModel->Load(_file);
-
-			m_Models.push_back(newModel);
-
-			//skip }
-			_file.ignore(256, '\n');
-			cout << "}\n";
-		}
-	}
-
-	cout << endl << endl;
-
-	//load Textures
-	_file >> dummy >> count; _file.ignore(256, '\n');
-	if (dummy == "TEXTURES")
-	{
-		m_numTextures = count;
-
-		cout << "TEXTURES : " << m_numTextures << endl;
-		for (int i = 0; i < m_numTextures; i++)
-		{
-			//skip {
-			_file.ignore(256, '\n');
-			cout << "{\n";
-
-			m_Textures.push_back(new Texture(_file));
-
-			//skip }
-			_file.ignore(256, '\n');
-			cout << "}\n";
-		}
-	}
-	cout << endl << endl;
-
-	//load Shaders
-	_file >> dummy >> count; _file.ignore(256, '\n');
-
-	if (dummy == "SHADERS")
-	{
-		//_file >> dummy >> m_numShaders; _file.ignore(256, '\n');
-		m_numShaders = count;
-		cout << "SHADERS : " << m_numShaders << endl;
-		for (int i = 0; i < m_numShaders; i++)
-		{
-			//skip {
-			_file.ignore(256, '\n');
-			cout << "{\n";
-
-			m_Shaders.push_back(new Shader(_file));
-
-			//skip }
-			_file.ignore(256, '\n');
-			cout << "}\n";
-		}
-	}
-	cout << endl << endl;
-
-	_file >> dummy >> count; _file.ignore(256, '\n');
-
-	//load GameObjects
-	if (dummy == "GAMEOBJECTS") 
-	{
-		m_numGameObjects = count;
-		//_file >> dummy >> m_numGameObjects; _file.ignore(256, '\n');
-		cout << "GAMEOBJECTS : " << m_numGameObjects << endl;
-		for (int i = 0; i < m_numGameObjects; i++)
-		{
-			//skip {
-			_file.ignore(256, '\n');
-			cout << "{\n";
-
-			string type;
-			_file >> dummy >> type; _file.ignore(256, '\n');
-			GameObject* newGO = GameObjectFactory::makeNewGO(type);
-			newGO->Load(_file);
-
-			m_GameObjects.push_back(newGO);
-
-			//skip }
-			_file.ignore(256, '\n');
-			cout << "}\n";
+				//skip }
+				_file.ignore(256, '\n');
+				std::cout << "}\n";
+			}
+			std::cout << endl << endl;
 		}
 
-	}
-	
-	if (_file.end)
-	{
-		cout << "<<<<<<<<<<<File Read complete>>>>>>>>>>>>>>";
-	}
 
+
+		//_file >> dummy >> count; _file.ignore(256, '\n');
+
+		else if (dummy == "MODELS")
+		{
+
+			//load Models
+			//_file >> dummy >> m_numModels; _file.ignore(256, '\n');
+			m_numModels = count;
+			std::cout << "MODELS : " << m_numModels << endl;
+			for (int i = 0; i < m_numModels; i++)
+			{
+				//skip {
+				_file.ignore(256, '\n');
+				std::cout << "{\n";
+
+				string type;
+				_file >> dummy >> type; _file.ignore(256, '\n');
+				Model* newModel = ModelFactory::makeNewModel(type);
+				newModel->Load(_file);
+
+				m_Models.push_back(newModel);
+
+				//skip }
+				_file.ignore(256, '\n');
+				std::cout << "}\n";
+			}
+			std::cout << endl << endl;
+		}
+
+
+
+		//load Textures
+		//_file >> dummy >> count; _file.ignore(256, '\n');
+		else if (dummy == "TEXTURES")
+		{
+			m_numTextures = count;
+
+			std::cout << "TEXTURES : " << m_numTextures << endl;
+			for (int i = 0; i < m_numTextures; i++)
+			{
+				//skip {
+				_file.ignore(256, '\n');
+				std::cout << "{\n";
+
+				m_Textures.push_back(new Texture(_file));
+
+				//skip }
+				_file.ignore(256, '\n');
+				std::cout << "}\n";
+			}
+			std::cout << endl << endl;
+		}
+
+
+		//load Shaders
+		//_file >> dummy >> count; _file.ignore(256, '\n');
+
+		else if (dummy == "SHADERS")
+		{
+			//_file >> dummy >> m_numShaders; _file.ignore(256, '\n');
+			m_numShaders = count;
+			std::cout << "SHADERS : " << m_numShaders << endl;
+			for (int i = 0; i < m_numShaders; i++)
+			{
+				//skip {
+				_file.ignore(256, '\n');
+				std::cout << "{\n";
+
+				m_Shaders.push_back(new Shader(_file));
+
+				//skip }
+				_file.ignore(256, '\n');
+				std::cout << "}\n";
+			}
+			std::cout << endl << endl;
+		}
+
+
+		//_file >> dummy >> count; _file.ignore(256, '\n');
+
+		//load GameObjects
+		else if (dummy == "GAMEOBJECTS")
+		{
+			m_numGameObjects = count;
+			//_file >> dummy >> m_numGameObjects; _file.ignore(256, '\n');
+			std::cout << "GAMEOBJECTS : " << m_numGameObjects << endl;
+			for (int i = 0; i < m_numGameObjects; i++)
+			{
+				//skip {
+				_file.ignore(256, '\n');
+				std::cout << "{\n";
+
+				string type;
+				_file >> dummy >> type; _file.ignore(256, '\n');
+				GameObject* newGO = GameObjectFactory::makeNewGO(type);
+				newGO->Load(_file);
+
+				m_GameObjects.push_back(newGO);
+
+				//skip }
+				_file.ignore(256, '\n');
+				std::cout << "}\n";
+			}
+			std::cout << endl << endl;
+		}
+
+		if (_file.eof())
+		{
+			std::cout << "<<<<<<<<<<<File Read complete>>>>>>>>>>>>>>";
+		}
+	}
 }
 
 void Scene::Init()
