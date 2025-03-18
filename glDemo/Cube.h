@@ -1,22 +1,19 @@
 #pragma once
 
 #include "core.h"
+#include "Model.h"
 
-class Cube {
+class Cube: public Model{
 
 private:
 
-	GLuint				m_numFaces = 0;
-	GLuint				m_vao = 0;
-
-	GLuint				m_vertexBuffer;
-	GLuint				m_colourBuffer;
-	GLuint				m_indexBuffer;
+	
 
 public:
 
 	Cube();
 	~Cube();
 
-	void render();
+	void Render();
+	void Load(ifstream& _file);
 };

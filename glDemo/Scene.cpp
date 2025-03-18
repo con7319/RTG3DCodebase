@@ -5,11 +5,14 @@
 #include "LightFactory.h"
 #include "Light.h"
 #include "ModelFactory.h"
-#include "model.h"
+#include "Model.h"
 #include "Texture.h"
 #include "Shader.h"
 #include "GameObjectFactory.h"
 #include <assert.h>
+#include "ArcballCamera.h"
+#include "helper.h"
+
 
 Scene::Scene()
 {
@@ -154,6 +157,22 @@ void Scene::Render()
 
 			//loop through setting up uniform shader values for anything else
 			SetShaderUniforms(SP);
+
+			if (m_useCamera && m_useCamera->GetType() == "ARCBALL") {
+				ArcballCamera* arcballCam = dynamic_cast<ArcballCamera*>(m_useCamera);
+				if (arcballCam) {
+					glm::mat4 projectionMatrix = arcballCam->projectionTransform();
+					glm::mat4 viewMatrix = arcballCam->viewTransform();
+
+					GLint pLocation;
+					Helper::SetUniformLocation(SP, "viewMatrix", &pLocation);
+					glUniformMatrix4fv(pLocation, 1, GL_FALSE, (GLfloat*)&viewMatrix);
+
+					Helper::SetUniformLocation(SP, "projMatrix", &pLocation);
+					glUniformMatrix4fv(pLocation, 1, GL_FALSE, (GLfloat*)&projectionMatrix);
+				}
+			}
+
 
 			//set any uniform shader values for the actual model
 			(*it)->PreRender();
@@ -402,5 +421,30 @@ void Scene::CycleCamera()
 	std::advance(it, m_useCameraIndex);
 
 	m_useCamera = *it;
+
+}
+void Scene::MouseMoved(float x, float y) {
+
+	if (m_useCamera) 
+	{
+		ArcballCamera* arcballCam = dynamic_cast<ArcballCamera*>(m_useCamera);
+		if (arcballCam)
+		{
+			arcballCam->rotateCamera(x, y);
+		}
+
+	}
+}
+void Scene::MouseScroll(float s)
+{
+	if (m_useCamera)
+	{
+		ArcballCamera* arcballCam = dynamic_cast<ArcballCamera*>(m_useCamera);
+		if (arcballCam)
+		{
+			arcballCam->scaleRadius(s);
+		}
+
+	}
 
 }

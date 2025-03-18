@@ -5,6 +5,7 @@
 #include <fstream>
 #include <iostream>
 
+
 using namespace std;
 
 class GameObject;
@@ -13,6 +14,7 @@ class Light;
 class Model;
 class Texture;
 class Shader;
+class ArcballCamera;
 
 //Note quite a proper scene graph but this contains data structures for all of our bits and pieces we want to draw
 class Scene
@@ -35,6 +37,8 @@ public:
 	Model* GetModel(string _modelName);
 	Shader* GetShader(string _shaderName);
 
+	ArcballCamera* arcballCam;
+
 	//Render Everything
 	void Render();
 
@@ -48,6 +52,10 @@ public:
 	void Init();
 
 	void CycleCamera();
+
+	void MouseMoved(float x, float y);
+
+	void MouseScroll(float s);
 
 protected:
 
