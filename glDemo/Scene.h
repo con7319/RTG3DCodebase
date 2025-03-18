@@ -15,6 +15,7 @@ class Model;
 class Texture;
 class Shader;
 class ArcballCamera;
+class FPcam;
 
 //Note quite a proper scene graph but this contains data structures for all of our bits and pieces we want to draw
 class Scene
@@ -38,6 +39,7 @@ public:
 	Shader* GetShader(string _shaderName);
 
 	ArcballCamera* arcballCam;
+	FPcam* firstPersonCam;
 
 	//Render Everything
 	void Render();
@@ -56,6 +58,8 @@ public:
 	void MouseMoved(float x, float y);
 
 	void MouseScroll(float s);
+
+	void MoveCam(glm::vec3 direction);
 
 protected:
 

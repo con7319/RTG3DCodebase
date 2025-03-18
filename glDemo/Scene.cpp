@@ -11,6 +11,7 @@
 #include "GameObjectFactory.h"
 #include <assert.h>
 #include "ArcballCamera.h"
+#include "FPcam.h"
 #include "helper.h"
 
 
@@ -163,6 +164,20 @@ void Scene::Render()
 				if (arcballCam) {
 					glm::mat4 projectionMatrix = arcballCam->projectionTransform();
 					glm::mat4 viewMatrix = arcballCam->viewTransform();
+
+					GLint pLocation;
+					Helper::SetUniformLocation(SP, "viewMatrix", &pLocation);
+					glUniformMatrix4fv(pLocation, 1, GL_FALSE, (GLfloat*)&viewMatrix);
+
+					Helper::SetUniformLocation(SP, "projMatrix", &pLocation);
+					glUniformMatrix4fv(pLocation, 1, GL_FALSE, (GLfloat*)&projectionMatrix);
+				}
+			}
+			if (m_useCamera && m_useCamera->GetType() == "FIRST") {
+				FPcam* firstPersonCam = dynamic_cast<FPcam*>(m_useCamera);
+				if (firstPersonCam) {
+					glm::mat4 projectionMatrix = firstPersonCam->projectionTransform();
+					glm::mat4 viewMatrix = firstPersonCam->viewTransform();
 
 					GLint pLocation;
 					Helper::SetUniformLocation(SP, "viewMatrix", &pLocation);
@@ -428,9 +443,14 @@ void Scene::MouseMoved(float x, float y) {
 	if (m_useCamera) 
 	{
 		ArcballCamera* arcballCam = dynamic_cast<ArcballCamera*>(m_useCamera);
+		FPcam* firstPersonCam = dynamic_cast<FPcam*>(m_useCamera);
 		if (arcballCam)
 		{
 			arcballCam->rotateCamera(x, y);
+		}
+		if (firstPersonCam)
+		{
+			firstPersonCam->rotateCamera(x, y);
 		}
 
 	}
@@ -440,11 +460,23 @@ void Scene::MouseScroll(float s)
 	if (m_useCamera)
 	{
 		ArcballCamera* arcballCam = dynamic_cast<ArcballCamera*>(m_useCamera);
+		FPcam* firstPersonCam = dynamic_cast<FPcam*>(m_useCamera);
 		if (arcballCam)
 		{
 			arcballCam->scaleRadius(s);
 		}
-
+		if (firstPersonCam)
+		{
+			firstPersonCam->scaleRadius(s);
+		}
 	}
 
+}
+void Scene::MoveCam(glm::vec3 direction)
+{
+	FPcam* firstPersonCam = dynamic_cast<FPcam*>(m_useCamera);
+	if (firstPersonCam)
+	{
+		firstPersonCam->Move(direction);
+	}
 }

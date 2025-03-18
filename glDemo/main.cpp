@@ -23,26 +23,6 @@ GUClock* g_gameClock = nullptr;
 bool				g_mouseDown = false;
 double				g_prevMouseX, g_prevMouseY;
 
-// Global Example objects
-// shouldn't really be anything in here for the final submission
-ArcballCamera* g_mainCamera = nullptr;
-CGPrincipleAxes* g_principleAxes = nullptr;
-Cube* g_cube = nullptr;
-
-GLuint g_flatColourShader;
-
-GLuint g_texDirLightShader;
-vec3 g_DLdirection = vec3(0.0f, 1.0f, 0.0f);
-vec3 g_DLcolour = vec3(1.0f, 1.0f, 1.0f);
-vec3 g_DLambient = vec3(0.2f, 0.2f, 0.2f);
-
-AIMesh* g_creatureMesh = nullptr;
-vec3 g_beastPos = vec3(2.0f, 0.0f, 0.0f);
-float g_beastRotation = 0.0f;
-AIMesh* g_planetMesh = nullptr;
-
-int g_showing = 0;
-int g_NumExamples = 3;
 
 //Global Game Object
 Scene* g_Scene = nullptr;
@@ -53,6 +33,30 @@ const unsigned int g_initHeight = 512;
 
 float _initWidth = g_initWidth;
 float _initHeight = g_initHeight;
+
+
+//booleans for key input
+bool wDown = false;
+bool aDown = false;
+bool sDown = false;
+bool dDown = false;
+
+//struct for keystate and direction of movement
+struct KeyState {
+	bool forward;
+	bool backward;
+	bool left;
+	bool right;
+	bool forLeft;
+	bool forRight;
+	bool backLeft;
+	bool backRight;
+
+
+	KeyState() = default;
+};
+
+KeyState m_keyState;
 
 #pragma endregion
 
@@ -67,6 +71,8 @@ void mouseButtonHandler(GLFWwindow* _window, int _button, int _action, int _mods
 void mouseScrollHandler(GLFWwindow* _window, double _xoffset, double _yoffset);
 void mouseEnterHandler(GLFWwindow* _window, int _entered);
 
+KeyState updateKeyState(KeyState& keyState);
+void GetDir(KeyState Key);
 
 int main()
 {
@@ -129,29 +135,7 @@ int main()
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
 
-	//
-	// Setup the Example Objects
-	//
-
-	g_texDirLightShader = setupShaders(string("Assets\\Shaders\\texture-directional.vert"), string("Assets\\Shaders\\texture-directional.frag"));
-	g_flatColourShader = setupShaders(string("Assets\\Shaders\\flatColour.vert"), string("Assets\\Shaders\\flatColour.frag"));
-
-	g_mainCamera = new ArcballCamera(0.0f, 0.0f, 1.98595f, 55.0f, 1.0f, 0.1f, 500.0f);
-
-	g_principleAxes = new CGPrincipleAxes();
-
-	g_cube = new Cube();
-
-	g_creatureMesh = new AIMesh(string("Assets\\beast\\beast.obj"));
-	if (g_creatureMesh) {
-		g_creatureMesh->addTexture(string("Assets\\beast\\beast_texture.bmp"), FIF_BMP);
-	}
-
-	g_planetMesh = new AIMesh(string("Assets\\gsphere.obj"));
-	if (g_planetMesh) {
-		g_planetMesh->addTexture(string("Assets\\Textures\\Hodges_G_MountainRock1.jpg"), FIF_JPEG);
-	}
-
+	
 	//
 	//Set up Scene class
 	//
@@ -203,97 +187,8 @@ void renderScene()
 	// Clear the rendering window
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	mat4 cameraTransform = g_mainCamera->projectionTransform() * g_mainCamera->viewTransform();
-
-	mat4 cameraProjection = g_mainCamera->projectionTransform();
-	mat4 cameraView = g_mainCamera->viewTransform() * translate(identity<mat4>(), -g_beastPos);
-
-#// Render principle axes - no modelling transforms so just use cameraTransform
-	if (true)
-	{
-		// Render axes 
-		glUseProgram(g_flatColourShader);
-		GLint pLocation;
-		Helper::SetUniformLocation(g_flatColourShader, "viewMatrix", &pLocation);
-		glUniformMatrix4fv(pLocation, 1, GL_FALSE, (GLfloat*)&cameraView);
-		Helper::SetUniformLocation(g_flatColourShader, "projMatrix", &pLocation);
-		glUniformMatrix4fv(pLocation, 1, GL_FALSE, (GLfloat*)&cameraProjection);
-		Helper::SetUniformLocation(g_flatColourShader, "modelMatrix", &pLocation);
-		mat4 modelTransform = identity<mat4>();
-		glUniformMatrix4fv(pLocation, 1, GL_FALSE, (GLfloat*)&modelTransform);
-
-		//g_principleAxes->Render();
-	}
-
-
 	g_Scene->Render();
-
-
-	//switch (g_showing)
-	//{
-	//case 0:
-	//{
-	//	glUseProgram(g_texDirLightShader);
-
-	//	GLint pLocation;
-	//	Helper::SetUniformLocation(g_texDirLightShader, "viewMatrix", &pLocation);
-	//	glUniformMatrix4fv(pLocation, 1, GL_FALSE, (GLfloat*)&cameraView);
-	//	Helper::SetUniformLocation(g_texDirLightShader, "projMatrix", &pLocation);
-	//	glUniformMatrix4fv(pLocation, 1, GL_FALSE, (GLfloat*)&cameraProjection);
-	//	Helper::SetUniformLocation(g_texDirLightShader, "texture", &pLocation);
-	//	glUniform1i(pLocation, 0); // set to point to texture unit 0 for AIMeshes
-	//	Helper::SetUniformLocation(g_texDirLightShader, "DIRDir", &pLocation);
-	//	glUniform3fv(pLocation, 1, (GLfloat*)&g_DLdirection);
-	//	Helper::SetUniformLocation(g_texDirLightShader, "DIRCol", &pLocation);
-	//	glUniform3fv(pLocation, 1, (GLfloat*)&g_DLcolour);
-	//	Helper::SetUniformLocation(g_texDirLightShader, "DIRAmb", &pLocation);
-	//	glUniform3fv(pLocation, 1, (GLfloat*)&g_DLambient);
-	//	if (g_creatureMesh) {
-
-	//		// Setup transforms
-	//		Helper::SetUniformLocation(g_texDirLightShader, "modelMatrix", &pLocation);
-	//		mat4 modelTransform = glm::translate(identity<mat4>(), g_beastPos) * eulerAngleY<float>(glm::radians<float>(g_beastRotation));
-	//		glUniformMatrix4fv(pLocation, 1, GL_FALSE, (GLfloat*)&modelTransform);
-
-	//		g_creatureMesh->setupTextures();
-	//		g_creatureMesh->render();
-	//	}
-
-	//	if (g_planetMesh) {
-
-	//		// Setup transforms
-	//		Helper::SetUniformLocation(g_texDirLightShader, "modelMatrix", &pLocation);
-	//		mat4 modelTransform = glm::translate(identity<mat4>(), vec3(4.0, 4.0, 4.0));
-	//		glUniformMatrix4fv(pLocation, 1, GL_FALSE, (GLfloat*)&modelTransform);
-
-	//		g_planetMesh->setupTextures();
-	//		g_planetMesh->render();
-	//	}
-	//}
-	//break;
-
-	//case 1:
-	//{
-	//	// Render cube 
-	//	glUseProgram(g_flatColourShader);
-	//	GLint pLocation;
-	//	Helper::SetUniformLocation(g_flatColourShader, "viewMatrix", &pLocation);
-	//	glUniformMatrix4fv(pLocation, 1, GL_FALSE, (GLfloat*)&cameraView);
-	//	Helper::SetUniformLocation(g_flatColourShader, "projMatrix", &pLocation);
-	//	glUniformMatrix4fv(pLocation, 1, GL_FALSE, (GLfloat*)&cameraProjection);
-	//	Helper::SetUniformLocation(g_flatColourShader, "modelMatrix", &pLocation);
-	//	mat4 modelTransform = glm::translate(identity<mat4>(), vec3(2.0, 0.0, 2.0));
-	//	glUniformMatrix4fv(pLocation, 1, GL_FALSE, (GLfloat*)&modelTransform);
-
-	//	g_cube->render();
-	//	break;
-	//}
-	//case 2:
-	//	
-	//}
-
 }
-
 
 // Function called to animate elements in the scene
 void updateScene() 
@@ -317,10 +212,7 @@ void updateScene()
 // Function to call when window resized
 void resizeWindow(GLFWwindow* _window, int _width, int _height)
 {
-	if (g_mainCamera) {
-
-		g_mainCamera->setAspect((float)_width / (float)_height);
-	}
+	
 	
 	_initWidth = _width;
 	_initHeight = _height;
@@ -342,12 +234,27 @@ void keyboardHandler(GLFWwindow* _window, int _key, int _scancode, int _action, 
 			break;
 
 		case GLFW_KEY_SPACE:
-			g_showing++;
-			g_showing = g_showing % g_NumExamples;
-
+			
+			break;
 		case GLFW_KEY_Q:
 			g_Scene->CycleCamera();
-
+			break;
+		case GLFW_KEY_W:
+			wDown = true;
+			GetDir(m_keyState);
+			break;
+		case GLFW_KEY_A:
+			aDown = true;
+			GetDir(m_keyState);
+			break;
+		case GLFW_KEY_S:
+			sDown = true;
+			GetDir(m_keyState);
+			break;
+		case GLFW_KEY_D:
+			dDown = true;
+			GetDir(m_keyState);
+			break;
 		default:
 		{
 		}
@@ -358,14 +265,87 @@ void keyboardHandler(GLFWwindow* _window, int _key, int _scancode, int _action, 
 		// handle key release events
 		switch (_key)
 		{
+		case GLFW_KEY_W:
+			wDown = false;
+			GetDir(m_keyState);
+			break;
+		case GLFW_KEY_A:
+			aDown = false;
+			GetDir(m_keyState);
+			break;
+		case GLFW_KEY_S:
+			sDown = false;
+			GetDir(m_keyState);
+			break;
+		case GLFW_KEY_D:
+			dDown = false;
+			GetDir(m_keyState);
+			break;
 		default:
 		{
 		}
 		}
 	}
 }
+KeyState updateKeyState(KeyState& keyState)
+{
+	keyState.forward = wDown;
+	keyState.left = aDown;
+	keyState.backward = sDown;
+	keyState.right = dDown;
 
+	// Diagonal keys:
+	keyState.forLeft = keyState.forward && keyState.left;
+	keyState.forRight = keyState.forward && keyState.right;
+	keyState.backLeft = keyState.backward && keyState.left;
+	keyState.backRight = keyState.backward && keyState.right;
 
+	return keyState;
+}
+void GetDir(KeyState Key)
+{
+	updateKeyState(Key);
+	if (Key.forward)
+	{
+		glm::vec3 forces(0.0f, 0.0f, 1.0);
+		g_Scene->MoveCam(forces);
+	}
+	if (Key.backward)
+	{
+		glm::vec3 forces(0.0f, 0.0f, -1.0);
+		g_Scene->MoveCam(forces);
+	}
+	if (Key.left)
+	{
+		glm::vec3 forces(-1.0, 0.0f, 0.0f);
+		g_Scene->MoveCam(forces);
+	}
+	if (Key.right)
+	{
+		glm::vec3 forces(1.0, 0.0f, 0.0f);
+		g_Scene->MoveCam(forces);
+	}
+	if (Key.backLeft)
+	{
+		glm::vec3 forces(-1.0, 0.0f, -1.0);
+		g_Scene->MoveCam(forces);
+	}
+	if (Key.backRight)
+	{
+		glm::vec3 forces(1.0, 0.0f, -1.0);
+		g_Scene->MoveCam(forces);
+	}
+	if (Key.forLeft)
+	{
+		glm::vec3 forces(-1.0, 0.0f, 1.0);
+		g_Scene->MoveCam(forces);
+	}
+	if (Key.forRight)
+	{
+		glm::vec3 forces(1.0, 0.0f, 1.0);
+		g_Scene->MoveCam(forces);
+	}
+}
 void mouseMoveHandler(GLFWwindow* _window, double _xpos, double _ypos) 
 {
 	if (g_mouseDown) {
@@ -375,8 +355,6 @@ void mouseMoveHandler(GLFWwindow* _window, double _xpos, double _ypos)
 		float dx = float(_xpos - g_prevMouseX);// *360.0f * tDelta;
 		float dy = float(_ypos - g_prevMouseY);// *360.0f * tDelta;
 
-		if (g_mainCamera)
-			g_mainCamera->rotateCamera(-dy, -dx); //not used but will leave as backup
 		
 		g_Scene->MouseMoved(-dy, -dx);
 
@@ -403,13 +381,6 @@ void mouseButtonHandler(GLFWwindow* _window, int _button, int _action, int _mods
 
 void mouseScrollHandler(GLFWwindow* _window, double _xoffset, double _yoffset) {
 
-	if (g_mainCamera) //not used but will leave as backup
-	{
-		if (_yoffset < 0.0)
-			g_mainCamera->scaleRadius(1.1f);
-		else if (_yoffset > 0.0)
-			g_mainCamera->scaleRadius(0.9f);
-	}
 
 	if (g_Scene)
 	{
