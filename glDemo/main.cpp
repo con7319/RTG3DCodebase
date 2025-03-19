@@ -201,7 +201,10 @@ void updateScene()
 		tDelta = (float)g_gameClock->gameTimeDelta();
 	}
 	
+	GetDir(m_keyState);
 	g_Scene->Update(tDelta, _initWidth, _initHeight);
+	
+
 }
 
 
@@ -241,19 +244,23 @@ void keyboardHandler(GLFWwindow* _window, int _key, int _scancode, int _action, 
 			break;
 		case GLFW_KEY_W:
 			wDown = true;
-			GetDir(m_keyState);
+			updateKeyState(m_keyState);
+			
 			break;
 		case GLFW_KEY_A:
 			aDown = true;
-			GetDir(m_keyState);
+			updateKeyState(m_keyState);
+			
 			break;
 		case GLFW_KEY_S:
 			sDown = true;
-			GetDir(m_keyState);
+			updateKeyState(m_keyState);
+			
 			break;
 		case GLFW_KEY_D:
 			dDown = true;
-			GetDir(m_keyState);
+			updateKeyState(m_keyState);
+			
 			break;
 		default:
 		{
@@ -267,19 +274,19 @@ void keyboardHandler(GLFWwindow* _window, int _key, int _scancode, int _action, 
 		{
 		case GLFW_KEY_W:
 			wDown = false;
-			GetDir(m_keyState);
+			updateKeyState(m_keyState);
 			break;
 		case GLFW_KEY_A:
 			aDown = false;
-			GetDir(m_keyState);
+			updateKeyState(m_keyState);
 			break;
 		case GLFW_KEY_S:
 			sDown = false;
-			GetDir(m_keyState);
+			updateKeyState(m_keyState);
 			break;
 		case GLFW_KEY_D:
 			dDown = false;
-			GetDir(m_keyState);
+			updateKeyState(m_keyState);
 			break;
 		default:
 		{
@@ -304,46 +311,48 @@ KeyState updateKeyState(KeyState& keyState)
 }
 void GetDir(KeyState Key)
 {
-	updateKeyState(Key);
+	//translate keystate into a vector relating to movement
+
+	//updateKeyState(Key);
 	if (Key.forward)
 	{
-		glm::vec3 forces(0.0f, 0.0f, 1.0);
-		g_Scene->MoveCam(forces);
+		glm::vec3 forces(0.0f, 0.0f, -1.0);
+		g_Scene->MoveCam(forces * 0.005f);
 	}
 	if (Key.backward)
 	{
-		glm::vec3 forces(0.0f, 0.0f, -1.0);
-		g_Scene->MoveCam(forces);
+		glm::vec3 forces(0.0f, 0.0f, 1.0);
+		g_Scene->MoveCam(forces * 0.005f);
 	}
 	if (Key.left)
 	{
-		glm::vec3 forces(-1.0, 0.0f, 0.0f);
-		g_Scene->MoveCam(forces);
+		glm::vec3 forces(1.0, 0.0f, 0.0f);
+		g_Scene->MoveCam(forces * 0.005f);
 	}
 	if (Key.right)
 	{
-		glm::vec3 forces(1.0, 0.0f, 0.0f);
-		g_Scene->MoveCam(forces);
+		glm::vec3 forces(-1.0, 0.0f, 0.0f);
+		g_Scene->MoveCam(forces * 0.005f);
 	}
 	if (Key.backLeft)
 	{
-		glm::vec3 forces(-1.0, 0.0f, -1.0);
-		g_Scene->MoveCam(forces);
+		glm::vec3 forces(1.0 /2, 0.0f, 1.0/2);
+		g_Scene->MoveCam(forces * 0.005f);
 	}
 	if (Key.backRight)
 	{
-		glm::vec3 forces(1.0, 0.0f, -1.0);
-		g_Scene->MoveCam(forces);
+		glm::vec3 forces(-1.0/2, 0.0f, 1.0/2);
+		g_Scene->MoveCam(forces * 0.005f);
 	}
 	if (Key.forLeft)
 	{
-		glm::vec3 forces(-1.0, 0.0f, 1.0);
-		g_Scene->MoveCam(forces);
+		glm::vec3 forces(1.0/2, 0.0f, -1.0/2);
+		g_Scene->MoveCam(forces * 0.005f);
 	}
 	if (Key.forRight)
 	{
-		glm::vec3 forces(1.0, 0.0f, 1.0);
-		g_Scene->MoveCam(forces);
+		glm::vec3 forces(-1.0/2, 0.0f, -1.0/2);
+		g_Scene->MoveCam(forces * 0.005f);
 	}
 }
 void mouseMoveHandler(GLFWwindow* _window, double _xpos, double _ypos) 
@@ -385,9 +394,9 @@ void mouseScrollHandler(GLFWwindow* _window, double _xoffset, double _yoffset) {
 	if (g_Scene)
 	{
 		if (_yoffset < 0.0)
-			g_Scene->MouseScroll(1.1f);
+			g_Scene->MouseScroll(1.0f);
 		else if (_yoffset > 0.0)
-			g_Scene->MouseScroll(0.9f);
+			g_Scene->MouseScroll(-1.0f);
 	}
 }
 

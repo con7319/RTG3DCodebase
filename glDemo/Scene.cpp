@@ -21,7 +21,7 @@ Scene::Scene()
 
 Scene::~Scene()
 {
-	//TODO: We are being really naught and not deleting everything as we finish
+	//TODO: We are being really naughty and not deleting everything as we finish
 	//what shoudl really go here and in similar places throughout the code base?
 }
 
@@ -450,7 +450,7 @@ void Scene::MouseMoved(float x, float y) {
 		}
 		if (firstPersonCam)
 		{
-			firstPersonCam->rotateCamera(x, y);
+			firstPersonCam->LookAt(x, y);
 		}
 
 	}
@@ -467,16 +467,20 @@ void Scene::MouseScroll(float s)
 		}
 		if (firstPersonCam)
 		{
-			firstPersonCam->scaleRadius(s);
+			firstPersonCam->CamZoom(s);
 		}
 	}
 
 }
 void Scene::MoveCam(glm::vec3 direction)
 {
+	m_useCamera->Move(direction);
+	
 	FPcam* firstPersonCam = dynamic_cast<FPcam*>(m_useCamera);
 	if (firstPersonCam)
 	{
 		firstPersonCam->Move(direction);
+
+
 	}
 }

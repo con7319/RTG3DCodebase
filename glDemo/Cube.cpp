@@ -53,10 +53,10 @@ static float positionArray[] = {
 // Packed colour buffer for principle axes model
 static float colourArray[] = {
 	//top
-	1.0f, 1.0f, 1.0f, 1.0f,//top front left,0
-	1.0f, 1.0f, 1.0f, 1.0f,//top back left,1
-	1.0f, 1.0f, 1.0f, 1.0f,//top back right,2
-	1.0f, 1.0f, 1.0f, 1.0f,//top front right,3
+	0.3f, 0.3f, 0.3f, 1.0f,//top front left,0
+	0.3f, 0.3f, 0.3f, 1.0f,//top back left,1
+	0.3f, 0.3f, 0.3f, 1.0f,//top back right,2
+	0.3f, 0.3f, 0.3f, 1.0f,//top front right,3
 	
 	//bottom
 	0.0f, 0.0f, 1.0f, 1.0f,//bottom front left,4

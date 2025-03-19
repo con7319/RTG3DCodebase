@@ -24,9 +24,6 @@ public:
 	Camera();
 	virtual ~Camera();
 
-	//initialise the camera _width _height
-	//scene maybe needed for more involved cameras to connect to relvant GOs and lights/shaders etc
-	//TODO move _w and _h to tick for cameras so apsect ratio can be updated if we change the size of the window
 	virtual void Init(float _w, float _h, Scene* _scene);
 
 	//tick this camera
