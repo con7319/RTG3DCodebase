@@ -316,43 +316,43 @@ void GetDir(KeyState Key)
 	//updateKeyState(Key);
 	if (Key.forward)
 	{
-		glm::vec3 forces(0.0f, 0.0f, -1.0);
-		g_Scene->MoveCam(forces * 0.005f);
+		glm::vec3 forces(0.0f, 0.0f, 1.0);
+		g_Scene->MoveCam(forces * 0.0005f);
 	}
 	if (Key.backward)
 	{
-		glm::vec3 forces(0.0f, 0.0f, 1.0);
-		g_Scene->MoveCam(forces * 0.005f);
+		glm::vec3 forces(0.0f, 0.0f, -1.0);
+		g_Scene->MoveCam(forces * 0.0005f);
 	}
 	if (Key.left)
 	{
-		glm::vec3 forces(1.0, 0.0f, 0.0f);
-		g_Scene->MoveCam(forces * 0.005f);
+		glm::vec3 forces(-1.0, 0.0f, 0.0f);
+		g_Scene->MoveCam(forces * 0.0005f);
 	}
 	if (Key.right)
 	{
-		glm::vec3 forces(-1.0, 0.0f, 0.0f);
-		g_Scene->MoveCam(forces * 0.005f);
+		glm::vec3 forces(1.0, 0.0f, 0.0f);
+		g_Scene->MoveCam(forces * 0.0005f);
 	}
 	if (Key.backLeft)
 	{
-		glm::vec3 forces(1.0 /2, 0.0f, 1.0/2);
-		g_Scene->MoveCam(forces * 0.005f);
+		glm::vec3 forces(-1.0 / 2, 0.0f, -1.0 / 2);
+		g_Scene->MoveCam(forces * 0.0005f);
 	}
 	if (Key.backRight)
 	{
-		glm::vec3 forces(-1.0/2, 0.0f, 1.0/2);
-		g_Scene->MoveCam(forces * 0.005f);
+		glm::vec3 forces(1.0 / 2, 0.0f, -1.0 / 2);
+		g_Scene->MoveCam(forces * 0.0005f);
 	}
 	if (Key.forLeft)
 	{
-		glm::vec3 forces(1.0/2, 0.0f, -1.0/2);
-		g_Scene->MoveCam(forces * 0.005f);
+		glm::vec3 forces(-1.0 / 2, 0.0f, 1.0 / 2);
+		g_Scene->MoveCam(forces * 0.0005f);
 	}
 	if (Key.forRight)
 	{
-		glm::vec3 forces(-1.0/2, 0.0f, -1.0/2);
-		g_Scene->MoveCam(forces * 0.005f);
+		glm::vec3 forces(1.0 / 2, 0.0f, 1.0 / 2);
+		g_Scene->MoveCam(forces * 0.0005f);
 	}
 }
 void mouseMoveHandler(GLFWwindow* _window, double _xpos, double _ypos) 

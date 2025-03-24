@@ -479,7 +479,7 @@ void Scene::MoveCam(glm::vec3 direction)
 	FPcam* firstPersonCam = dynamic_cast<FPcam*>(m_useCamera);
 	if (firstPersonCam)
 	{
-		firstPersonCam->Move(direction);
+		firstPersonCam->moveCam(direction);
 
 
 	}
