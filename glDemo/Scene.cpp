@@ -12,7 +12,9 @@
 #include <assert.h>
 #include "ArcballCamera.h"
 #include "FPcam.h"
+#include "OrthoCam.h"
 #include "helper.h"
+#include "LevelGen.h"
 
 
 Scene::Scene()
@@ -178,6 +180,20 @@ void Scene::Render()
 				if (firstPersonCam) {
 					glm::mat4 projectionMatrix = firstPersonCam->projectionTransform();
 					glm::mat4 viewMatrix = firstPersonCam->viewTransform();
+
+					GLint pLocation;
+					Helper::SetUniformLocation(SP, "viewMatrix", &pLocation);
+					glUniformMatrix4fv(pLocation, 1, GL_FALSE, (GLfloat*)&viewMatrix);
+
+					Helper::SetUniformLocation(SP, "projMatrix", &pLocation);
+					glUniformMatrix4fv(pLocation, 1, GL_FALSE, (GLfloat*)&projectionMatrix);
+				}
+			}
+			if (m_useCamera && m_useCamera->GetType() == "ORTHO") {
+				OrthoCam* orthoCam = dynamic_cast<OrthoCam*>(m_useCamera);
+				if (orthoCam) {
+					glm::mat4 projectionMatrix = orthoCam->projectionTransform();
+					glm::mat4 viewMatrix = orthoCam->viewTransform();
 
 					GLint pLocation;
 					Helper::SetUniformLocation(SP, "viewMatrix", &pLocation);
@@ -419,12 +435,25 @@ void Scene::Init()
 		m_useCameraIndex = 0;
 	}
 
+	// Call LevelGen to generate the level
+	levelGen = new LevelGen(this);
+
+	const std::vector<ExampleGO>& Walls = levelGen->getWalls();
+	for (const ExampleGO& Wall : Walls)
+	{
+		GameObject* gameObject = new GameObject();
+		gameObject->SetName("Wall");
+		gameObject->SetPos(Wall.GetPos());
+		m_GameObjects.push_back(gameObject);
+	}
+
 	//set up links between everything and GameObjects
 	for (list<GameObject*>::iterator it = m_GameObjects.begin(); it != m_GameObjects.end(); it++)
 	{
 		(*it)->Init(this);
 	}
 
+	
 }
 
 void Scene::CycleCamera() 
@@ -444,6 +473,7 @@ void Scene::MouseMoved(float x, float y) {
 	{
 		ArcballCamera* arcballCam = dynamic_cast<ArcballCamera*>(m_useCamera);
 		FPcam* firstPersonCam = dynamic_cast<FPcam*>(m_useCamera);
+		OrthoCam* orthoCam = dynamic_cast<OrthoCam*>(m_useCamera);
 		if (arcballCam)
 		{
 			arcballCam->rotateCamera(x, y);
@@ -451,6 +481,10 @@ void Scene::MouseMoved(float x, float y) {
 		if (firstPersonCam)
 		{
 			firstPersonCam->LookAt(x, y);
+		}
+		if (orthoCam) 
+		{
+			orthoCam->LookAt(x, y);
 		}
 
 	}

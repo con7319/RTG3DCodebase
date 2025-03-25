@@ -1,9 +1,11 @@
 #include "ExampleGO.h"
+#include "Scene.h"
+#include "Model.h"
+#include "Texture.h"
+#include "Shader.h"
 #include "AIModel.h"
 #include "stringHelp.h"
-#include "Scene.h"
-#include "Shader.h"
-#include "Texture.h"
+
 
 ExampleGO::ExampleGO()
 {

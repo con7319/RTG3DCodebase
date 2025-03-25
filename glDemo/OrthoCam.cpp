@@ -76,11 +76,17 @@ void OrthoCam::Tick(float _dt, float _width, float _height) {
 	m_viewMatrix = glm::lookAt(m_pos, m_lookAt, glm::vec3(0.0f, 1.0f, 0.0f));
 
 	// Update the projection matrix
-	m_projectionMatrix = glm::ortho(-m_width, m_width, -m_height, m_height, m_nearPlane, m_farPlane);
+	m_projectionMatrix = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 0.1f, 500.0f);
 
-	std::cout << "Camera Position: " << m_pos.x << ", " << m_pos.y << ", " << m_pos.z << std::endl;
-	std::cout << "Camera LookAt: " << m_lookAt.x << ", " << m_lookAt.y << ", " << m_lookAt.z << std::endl;
+	// Print camera position and lookAt for debugging
+	//std::cout << "Camera Position: " << m_pos.x << ", " << m_pos.y << ", " << m_pos.z << std::endl;
+	//std::cout << "Camera LookAt: " << m_lookAt.x << ", " << m_lookAt.y << ", " << m_lookAt.z << std::endl;
 
+	// Check if the camera is producing a black screen
+	if (m_pos == m_lookAt) {
+		std::cout << "Warning: Camera is looking at the same position as the camera position. Adjust the lookAt point." << std::endl;
+
+	}
 }
 
 void OrthoCam::UpdateForward()

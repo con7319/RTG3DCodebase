@@ -16,4 +16,5 @@ public:
 
 	void Render();
 	void Load(ifstream& _file);
+
 };

@@ -6,6 +6,7 @@
 #include <iostream>
 
 
+
 using namespace std;
 
 class GameObject;
@@ -16,6 +17,8 @@ class Texture;
 class Shader;
 class ArcballCamera;
 class FPcam;
+class OrthoCam;
+class LevelGen;
 
 //Note quite a proper scene graph but this contains data structures for all of our bits and pieces we want to draw
 class Scene
@@ -40,6 +43,8 @@ public:
 
 	ArcballCamera* arcballCam;
 	FPcam* firstPersonCam;
+	OrthoCam* orthoCam;
+	LevelGen* levelGen;
 
 	//Render Everything
 	void Render();

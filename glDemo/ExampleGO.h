@@ -24,6 +24,9 @@ public:
 
 	virtual void Init(Scene* _scene);
 
+	Model* GetModel() const { return m_model; }
+	void SetModel(Model* model) { m_model = model; }
+
 protected:
 
 	string m_ShaderName, m_TexName, m_ModelName;
