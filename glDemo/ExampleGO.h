@@ -1,4 +1,5 @@
 #pragma once
+
 #include "GameObject.h"
 class Model;
 
@@ -24,6 +25,7 @@ public:
 
 	virtual void Init(Scene* _scene);
 
+	//added getter and setter for model
 	Model* GetModel() const { return m_model; }
 	void SetModel(Model* model) { m_model = model; }
 

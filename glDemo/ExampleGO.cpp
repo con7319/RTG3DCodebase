@@ -47,6 +47,7 @@ void ExampleGO::PreRender()
 
 void ExampleGO::Render()
 {
+	
 	m_model->Render();
 }
 
