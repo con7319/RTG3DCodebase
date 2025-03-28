@@ -7,16 +7,20 @@
 
 class LevelGen : public ExampleGO {
 public:
-    LevelGen(Scene* scene);
+    LevelGen();
     ~LevelGen();
     void Render();
-    void generateLevel(const std::array<std::array<int, 5>, 5>& levelMatrix);
+    void generateLevel(const std::array<std::array<int, 5>, 5>& levelMatrix, glm::vec3& origin);
+    void GenerateGrid(const std::array<std::array<int, 5>, 5>& levelLayout);
     const std::vector<vec3>& getLocations() const;
 
-private:
     std::string m_ModelName = "CUBEHIGH";
     std::string m_ShaderName = "TEXDIR";
     std::string m_TexName = "STARS2";
+
+
+private:
+   
 
     std::vector<vec3> locations;
     void clearLevel();

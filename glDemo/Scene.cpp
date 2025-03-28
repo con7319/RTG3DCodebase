@@ -204,7 +204,7 @@ void Scene::Render()
 				}
 			}
 
-
+			//levelGen->Render();
 			//set any uniform shader values for the actual model
 			(*it)->PreRender();
 
@@ -404,7 +404,7 @@ void Scene::Load(ifstream& _file)
 
 		if (_file.eof())
 		{
-			std::cout << "<<<<<<<<<<<File Read complete>>>>>>>>>>>>>>";
+			std::cout << "<<<<<<<<<<<File Read complete>>>>>>>>>>>>>>\n";
 		}
 	}
 }
@@ -436,7 +436,7 @@ void Scene::Init()
 	}
 
 	// Call LevelGen to generate the level
-	levelGen = new LevelGen(this);
+	//levelGen = new LevelGen(this);
 
 	
 
