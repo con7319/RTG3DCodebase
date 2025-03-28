@@ -133,7 +133,7 @@ NAME: AXES
 {
 TYPE: AI
 NAME: CUBEHIGH
-FILE: Assets\\cube_highpoly.obj
+FILE: Assets\\cube128.obj
 }
 
 
