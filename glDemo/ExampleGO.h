@@ -1,7 +1,9 @@
 #pragma once
 
 #include "GameObject.h"
+#include "array"
 class Model;
+class Texture;
 
 //replicate the examples from the main.cpp
 //each Game Object has a Mesh, a texture and a shader
@@ -31,9 +33,14 @@ public:
 
 protected:
 
-	string m_ShaderName, m_TexName, m_ModelName;
-
+	string m_ShaderName, m_TexName, m_ModelName, m_normalName;
+	bool normalLoaded;
+	float m_NoTex;
 	GLuint m_texture;
+	std::vector<std::string> m_texNames;
+	std::vector<GLuint> m_texList;
 	Model* m_model;
+	Scene* m_scene;
+	GLuint m_NormalMap;
 };
 

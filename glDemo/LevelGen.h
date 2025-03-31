@@ -12,16 +12,18 @@ public:
     void Render();
     void generateLevel(const std::array<std::array<int, 5>, 5>& levelMatrix, glm::vec3& origin);
     void GenerateGrid(const std::array<std::array<int, 5>, 5>& levelLayout);
-    const std::vector<vec3>& getLocations() const;
+    const std::vector<vec3>& getLocations1() const;
+    const std::vector<vec3>& getLocations2() const;
 
     std::string m_ModelName = "CUBEHIGH";
     std::string m_ShaderName = "TEXDIR";
-    std::string m_TexName = "STARS2";
+    std::string m_TexName = "";
 
 
 private:
    
 
-    std::vector<vec3> locations;
+    std::vector<vec3> locations1;
+    std::vector<vec3> locations2;
     void clearLevel();
 };

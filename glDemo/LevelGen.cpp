@@ -8,19 +8,19 @@
 
 std::array<std::array<int, 5>, 5> LevelLayout = { {
 
-    {1, 2, 2, 2, 1},
-    {1, 2, 0, 3, 1},
-    {1, 5, 0, 3, 1},
-    {1, 4, 1, 1, 1},
-    {1, 1, 1, 1, 1}
+    {1, 0, 2, 0, 1},
+    {1, 0, 3, 0, 1},
+    {2, 5, 2, 5, 2},
+    {0, 0, 3, 0, 0},
+    {1, 0, 2, 0, 1}
 } };
 std::array<std::array<int, 5>, 5> Level0 = { {
 
-    {1, 0, 0, 0, 1},
+    {1, 0, 0, 0, 2},
     {0, 0, 0, 0, 0},
     {0, 0, 0, 0, 0},
     {0, 0, 0, 0, 0},
-    {1, 0, 0, 0, 1}
+    {2, 0, 0, 0, 1}
 } };
 std::array<std::array<int, 5>, 5> Level1 = { {
 
@@ -28,15 +28,15 @@ std::array<std::array<int, 5>, 5> Level1 = { {
     {1, 0, 0, 0, 1},
     {1, 0, 0, 0, 1},
     {1, 0, 0, 0, 1},
-    {1, 1, 1, 1, 1}
+    {1, 2, 2, 2, 1}
 } };
 std::array<std::array<int, 5>, 5> Level2 = { {
 
-    {1, 1, 0, 1, 1},
+    {2, 1, 0, 1, 2},
     {1, 0, 0, 0, 1},
     {0, 0, 0, 0, 0},
     {1, 0, 0, 0, 1},
-    {1, 1, 0, 1, 1}
+    {2, 1, 0, 1, 2}
 } };
 std::array<std::array<int, 5>, 5> Level3 = { {
 
@@ -48,19 +48,19 @@ std::array<std::array<int, 5>, 5> Level3 = { {
 } };
 std::array<std::array<int, 5>, 5> Level4 = { {
 
-    {1, 1, 0, 1, 1},
+    {1, 2, 0, 2, 1},
     {1, 0, 0, 0, 1},
     {0, 0, 1, 0, 0},
     {1, 0, 0, 0, 1},
-    {1, 1, 0, 1, 1}
+    {1, 2, 0, 2, 1}
 } };
 std::array<std::array<int, 5>, 5> Level5 = { {
 
-    {1, 0, 1, 0, 1},
-    {1, 0, 1, 0, 1},
-    {1, 0, 1, 0, 0},
-    {1, 0, 1, 0, 1},
-    {1, 0, 1, 0, 1}
+    {1, 1, 2, 1, 1},
+    {1, 0, 0, 0, 1},
+    {0, 0, 0, 0, 0},
+    {1, 0, 0, 0, 1},
+    {1, 1, 2, 1, 1}
 } };
 
 
@@ -86,7 +86,8 @@ LevelGen::LevelGen()
 
 LevelGen::~LevelGen()
 {
-	locations.clear();
+	locations1.clear();
+    locations2.clear();
 }
 
 
@@ -96,11 +97,16 @@ void LevelGen::generateLevel(const std::array<std::array<int, 5>, 5>& levelMatri
     float offsetX = cols / 2;
     float offsetZ = rows / 2;
     for (int i = 0; i < rows; ++i) {
-        for (int j = 0; j < cols; ++j) {
-            if (levelMatrix[i][j] == 1) { // if its 1 it represents a wall
+        for (int j = 0; j < cols; ++j) {//0 represents no wall
+            if (levelMatrix[i][j] == 1) { // if its 1 it represents a wall with texture 1
                 glm::vec3 newPos(j - offsetX + origin.x, origin.y, i - offsetZ + origin.z);
                 std::cout << "Calculated position: (" << newPos.x << ", " << newPos.y << ", " << newPos.z << ")\n";
-                locations.push_back(newPos); // Push the dereferenced wall object
+                locations1.push_back(newPos); // Push the dereferenced wall object
+            }
+            if (levelMatrix[i][j] == 2) { // if its 2 it represents a wall with texture 2
+                glm::vec3 newPos(j - offsetX + origin.x, origin.y, i - offsetZ + origin.z);
+                std::cout << "Calculated position: (" << newPos.x << ", " << newPos.y << ", " << newPos.z << ")\n";
+                locations2.push_back(newPos); // Push the dereferenced wall object
             }
         }
     }    
@@ -144,24 +150,41 @@ void LevelGen::GenerateGrid(const std::array<std::array<int, 5>, 5>& levelLayout
 
 void LevelGen::Render()
 {
- 
-    for (const auto& location : locations)
+    m_NormalMap = m_NormalMap;
+    for (const auto& location : locations1)
     {
+		m_texture = m_texList[0];
         m_worldMatrix = glm::translate(mat4(1.0), vec3(location));
         m_worldMatrix = glm::scale(m_worldMatrix, glm::vec3(m_scale));
         ExampleGO::PreRender();
         ExampleGO::Render();
     }
+
+    for (const auto& location : locations2)
+    {
+        m_texture = m_texList[1];
+        m_worldMatrix = glm::translate(mat4(1.0), vec3(location));
+        m_worldMatrix = glm::scale(m_worldMatrix, glm::vec3(m_scale));
+        ExampleGO::PreRender();
+        ExampleGO::Render();
+    }
+
     
 }
 
 
-const std::vector<vec3>& LevelGen::getLocations() const
+const std::vector<vec3>& LevelGen::getLocations1() const
 {
-    return locations;
+    return locations1;
+}
+
+const std::vector<vec3>& LevelGen::getLocations2() const
+{
+    return locations2;
 }
 
 void LevelGen::clearLevel()
 {
-    locations.clear();
+    locations1.clear();
+    locations2.clear();
 }
