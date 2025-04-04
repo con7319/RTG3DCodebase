@@ -9,6 +9,7 @@
 
 ExampleGO::ExampleGO()
 {
+	normalLoaded = false;
 }
 
 ExampleGO::~ExampleGO()
@@ -22,19 +23,21 @@ void ExampleGO::Load(ifstream& _file)
    StringHelp::Float(_file, "NOTEX", m_NoTex);  
    for (int i = 0; i < m_NoTex; ++i)
    {
-    std::string texName;
-    StringHelp::String(_file, "TEXTURE", texName);
-	m_texNames.push_back(texName);
+		std::string texName;
+		StringHelp::String(_file, "TEXTURE", texName);
+		m_texNames.push_back(texName);
 
    }
    StringHelp::String(_file, "SHADER", m_ShaderName); 
-   StringHelp::String(_file, "NORMALMAP", m_normalName);
+   
 
-   if (m_normalName == "NULL") {
-	   normalLoaded = false;
+   if (m_ShaderName == "NORM") {
+	   
+	   StringHelp::String(_file, "NORMALMAP", m_normalName);
+	   normalLoaded = true;	
    }
    else {
-	   normalLoaded = true;
+	   
    }
 }
 
@@ -48,21 +51,28 @@ void ExampleGO::PreRender()
 	GameObject::PreRender();
 
 	//only thing I need to do is tell the shader about my texture
-
-	glEnable(GL_TEXTURE_2D);
+	
+	m_model->setupTextures();
+	/*glEnable(GL_TEXTURE_2D);
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, m_texture);
+	glUniform1i(glGetUniformLocation(m_ShaderProg, "texture"), 0);*/
 
 	//TODO: this does sort of replicate stuff in the AIMesh class, could we make them more compatible.
 
 	//TODO: NORMAL MAPS!
-	if (normalLoaded) {
+	/*if (normalLoaded) {
 
+		
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, m_NormalMap);
-	}
-	
+		glUniform1i(glGetUniformLocation(m_ShaderProg, "normalMap"), 1);
+
+
+	}*/
+
+	//glDisable(GL_TEXTURE_2D);
 }
 
 void ExampleGO::Render()
@@ -75,15 +85,22 @@ void ExampleGO::Init(Scene* _scene)
 {
 	m_scene = _scene;
 	m_ShaderProg = _scene->GetShader(m_ShaderName)->GetProg();
+	m_model = _scene->GetModel(m_ModelName);
+
 	for (string name : m_texNames)
 	{
+		m_model->addTexture(_scene->GetTexture(name)->GetTexID());
 		m_texList.push_back (_scene->GetTexture(name)->GetTexID());
 	}
-	m_model = _scene->GetModel(m_ModelName);
+
+	
 
 	if (normalLoaded) 
 	{
-		m_NormalMap = _scene->GetTexture(m_normalName)->GetTexID();
+		
+		m_model->addNormalMap(_scene->GetTexture(m_normalName)->GetTexID());
+
+
 	}
 	
 }

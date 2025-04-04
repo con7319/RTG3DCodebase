@@ -126,6 +126,9 @@
     <ClInclude Include="LevelGen.h">
       <Filter>Scene Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="PointLight.h">
+      <Filter>Scene Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -206,6 +209,9 @@
     <ClCompile Include="LevelGen.cpp">
       <Filter>Scene Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PointLight.cpp">
+      <Filter>Scene Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="manifest.txt">
@@ -223,6 +229,12 @@
       <Filter>Shaders</Filter>
     </None>
     <None Include="Assets\Shaders\flatColour.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Normal-map.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Assets\Shaders\Normal-map.frag">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

@@ -1,10 +1,10 @@
 #pragma once
 
 #include "core.h"
-#include "Model.h"
+#include "AIModel.h"
 
 
-class CGPrincipleAxes: public Model  {
+class CGPrincipleAxes: public AIModel  {
 
 private:
 

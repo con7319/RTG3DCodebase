@@ -2,7 +2,7 @@
 
 #include "GameObject.h"
 #include "array"
-class Model;
+class AIModel;
 class Texture;
 
 //replicate the examples from the main.cpp
@@ -28,8 +28,8 @@ public:
 	virtual void Init(Scene* _scene);
 
 	//added getter and setter for model
-	Model* GetModel() const { return m_model; }
-	void SetModel(Model* model) { m_model = model; }
+	AIModel* GetModel() const { return m_model; }
+	void SetModel(AIModel* model) { m_model = model; }
 
 protected:
 
@@ -39,7 +39,7 @@ protected:
 	GLuint m_texture;
 	std::vector<std::string> m_texNames;
 	std::vector<GLuint> m_texList;
-	Model* m_model;
+	AIModel* m_model;
 	Scene* m_scene;
 	GLuint m_NormalMap;
 };

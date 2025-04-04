@@ -154,6 +154,7 @@ void LevelGen::Render()
     for (const auto& location : locations1)
     {
 		m_texture = m_texList[0];
+		
         m_worldMatrix = glm::translate(mat4(1.0), vec3(location));
         m_worldMatrix = glm::scale(m_worldMatrix, glm::vec3(m_scale));
         ExampleGO::PreRender();

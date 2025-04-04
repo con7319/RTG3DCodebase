@@ -27,7 +27,7 @@ public:
 	//Getters and Setters
 	void SetName(string _name) { m_name = _name; }
 	string GetName() { return m_name; }
-	void SetTye(string _type) { m_type = _type; }
+	void SetType(string _type) { m_type = _type; }
 	string GetType() { return m_type; }
 
 	vec3 GetCol() { return m_col; }
