@@ -66,11 +66,11 @@ void OrthoCam::Tick(float _dt, float _width, float _height) {
 	float orbitAngle = glm::radians(m_yaw);  // Convert yaw to radians
 
 	// Update position based on orbit angle, ensuring correct distance (radius)
-	m_pos.x = m_lookAt.x + radius * cos(orbitAngle);
-	m_pos.z = m_lookAt.z + radius * sin(orbitAngle);
+	/*m_pos.x = m_lookAt.x + radius * cos(orbitAngle);
+	m_pos.z = m_lookAt.z + radius * sin(orbitAngle);*/
 
 	// Keep the y-value fixed (or adjust it as needed for scene size)
-	m_pos.y = m_lookAt.y + 10.0f;  // Fixed height above the lookAt point
+	//m_pos.y = m_lookAt.y + 10.0f;  // Fixed height above the lookAt point
 
 	// Update the view matrix
 	m_viewMatrix = glm::lookAt(m_pos, m_lookAt, glm::vec3(0.0f, 1.0f, 0.0f));
@@ -111,29 +111,35 @@ void OrthoCam::UpdateForward()
 void OrthoCam::LookAt(float x, float y)
 {
 	// Update yaw for horizontal rotation
+	   // Adjust yaw and pitch based on mouse movement
 	m_yaw += y * m_sensitivity;
-
-	// Clamp pitch so it doesn't go upside down
 	m_pitch -= x * m_sensitivity;
+
+	// Clamp pitch to prevent flipping
 	if (m_pitch > 89.0f) m_pitch = 89.0f;
 	if (m_pitch < -89.0f) m_pitch = -89.0f;
 
-
+	// Keep yaw within 0 to 360 degrees
 	if (m_yaw > 360.0f) m_yaw -= 360.0f;
 	if (m_yaw < 0.0f) m_yaw += 360.0f;
 
+	// Calculate new position around `m_lookAt` using spherical coordinates
+	float radius = 15.0f; // Fixed orbit radius
+	float yawRadians = glm::radians(m_yaw);
+	float pitchRadians = glm::radians(m_pitch);
 
-	// Keep a fixed distance from `m_lookAt`
-	float radius = glm::length(m_pos - m_lookAt);
-	float orbitAngle = glm::radians(m_yaw);
+	m_pos.x = m_lookAt.x + radius * cos(pitchRadians) * cos(yawRadians);
+	m_pos.y = m_lookAt.y + radius * sin(pitchRadians);
+	m_pos.z = m_lookAt.z + radius * cos(pitchRadians) * sin(yawRadians);
 
-	// Calculate new position around `m_lookAt`
-	m_pos.x = m_lookAt.x + radius * cos(orbitAngle);
-	m_pos.z = m_lookAt.z + radius * sin(orbitAngle);
-	m_pos.y = m_lookAt.y + radius * tan(glm::radians(45.0f)); // Keep 45-degree elevation
+	//keep camera within range of world
+
+	/*if (glm::length(m_pos - m_lookAt) > m_farPlane) {
+		m_pos = m_lookAt + glm::normalize(m_pos - m_lookAt) * m_farPlane;
+	}*/
 
 	// Update forward vector
-	UpdateForward();
+	//UpdateForward();
 
 	// Update view matrix
 	m_viewMatrix = glm::lookAt(m_pos, m_lookAt, m_up);
