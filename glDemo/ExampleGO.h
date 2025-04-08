@@ -30,6 +30,10 @@ public:
 	//added getter and setter for model
 	AIModel* GetModel() const { return m_model; }
 	void SetModel(AIModel* model) { m_model = model; }
+	
+	void addTexture(GLuint _textureID);
+	void addNormalMap(GLuint _normalMapID);
+	AIModel* m_model;
 
 protected:
 
@@ -39,7 +43,7 @@ protected:
 	GLuint m_texture;
 	std::vector<std::string> m_texNames;
 	std::vector<GLuint> m_texList;
-	AIModel* m_model;
+	
 	Scene* m_scene;
 	GLuint m_NormalMap;
 };

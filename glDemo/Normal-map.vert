@@ -21,16 +21,13 @@ uniform mat4 projection;
 
 void main()
 {
-
     vec4 worldPos = model * vec4(aPos, 1.0);
     outputFragment.surfaceWorldPos = worldPos.xyz;
-    outputFragment.surfaceNormal = mat3(transpose(inverse(model))) * aNormal;
+    outputFragment.surfaceNormal = normalize(mat3(transpose(inverse(model))) * aNormal);
     outputFragment.texCoord = aTexCoord;
-    outputFragment.T = mat3(model) * aTangent;
-    outputFragment.B = mat3(model) * aBitangent;
-    outputFragment.N = mat3(model) * aNormal;
+    outputFragment.T = normalize(mat3(transpose(inverse(model))) * aTangent);
+    outputFragment.B = normalize(mat3(transpose(inverse(model))) * aBitangent);
+    outputFragment.N = normalize(mat3(transpose(inverse(model))) * aNormal);
 
     gl_Position = projection * view * worldPos;
-
-
 }

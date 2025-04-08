@@ -90,10 +90,45 @@ AIMesh::AIMesh(std::string _filename, GLuint _meshIndex)
 
 // Texture setup methods
 
+#include <vector>
+
+// Add a vector to store multiple texture IDs
+std::vector<GLuint> m_textureIDs;
+
+// Modify the addTexture method to add a texture ID to the vector
 void AIMesh::addTexture(GLuint _textureID)
 {
+    //m_textureIDs.push_back(_textureID);
 	this->m_textureID = _textureID;
+	
 }
+
+// Modify the addTexture method to load a texture and add its ID to the vector
+//void AIMesh::addTexture(std::string _filename, FREE_IMAGE_FORMAT _format)
+//{
+//    GLuint textureID = loadTexture(_filename, _format);
+//    m_textureIDs.push_back(textureID);
+//}
+
+// Modify the setupTextures method to bind all textures
+//void AIMesh::setupTextures()
+//{
+//    if (m_meshTexCoordBuffer != 0) {
+//        for (size_t i = 0; i < m_textureIDs.size(); ++i) {
+//            glActiveTexture(GL_TEXTURE0 + i);
+//            glBindTexture(GL_TEXTURE_2D, m_textureIDs[i]);
+//        }
+//
+//        // *** normal mapping *** check if normal map added - if so bind to texture unit after the last texture
+//        if (m_normalMapID != 0) {
+//            glActiveTexture(GL_TEXTURE0 + m_textureIDs.size());
+//            glBindTexture(GL_TEXTURE_2D, m_normalMapID);
+//        }
+//
+//        // Restore default
+//        glActiveTexture(GL_TEXTURE0);
+//    }
+//}
 
 void AIMesh::addTexture(std::string _filename, FREE_IMAGE_FORMAT _format)
 {
@@ -111,6 +146,12 @@ void AIMesh::addNormalMap(std::string _filename, FREE_IMAGE_FORMAT _format)
 	m_normalMapID = loadTexture(_filename, _format);
 }
 
+//void AIMesh::setTexture(GLuint textureID, int unit) {
+//	glActiveTexture(GL_TEXTURE0 + unit);
+//	glBindTexture(GL_TEXTURE_2D, textureID);
+//	std::string uniformName = "texture" + std::to_string(unit);
+//	//glUniform1i(glGetUniformLocation(m_shaderProg, uniformName.c_str()), unit);
+//}
 
 // Rendering functions
 

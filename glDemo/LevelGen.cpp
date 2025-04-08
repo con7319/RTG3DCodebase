@@ -150,10 +150,11 @@ void LevelGen::GenerateGrid(const std::array<std::array<int, 5>, 5>& levelLayout
 
 void LevelGen::Render()
 {
-    m_NormalMap = m_NormalMap;
+	
+	ExampleGO::addNormalMap(ExampleGO::m_NormalMap);
     for (const auto& location : locations1)
     {
-		m_texture = m_texList[0];
+		ExampleGO::addTexture(m_texList[0]);
 		
         m_worldMatrix = glm::translate(mat4(1.0), vec3(location));
         m_worldMatrix = glm::scale(m_worldMatrix, glm::vec3(m_scale));
@@ -163,7 +164,7 @@ void LevelGen::Render()
 
     for (const auto& location : locations2)
     {
-        m_texture = m_texList[1];
+        ExampleGO::addTexture(m_texList[1]);
         m_worldMatrix = glm::translate(mat4(1.0), vec3(location));
         m_worldMatrix = glm::scale(m_worldMatrix, glm::vec3(m_scale));
         ExampleGO::PreRender();

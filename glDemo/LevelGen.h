@@ -16,7 +16,7 @@ public:
     const std::vector<vec3>& getLocations2() const;
 
     std::string m_ModelName = "CUBEHIGH";
-    std::string m_ShaderName = "TEXDIR";
+    std::string m_ShaderName = "";
     std::string m_TexName = "";
 
 

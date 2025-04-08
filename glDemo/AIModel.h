@@ -16,8 +16,10 @@ public:
 	void addNormalMap(GLuint _normalMapID);
 	void addTexture(GLuint _textureID);
 	void setupTextures();
+	void setTexture(GLuint textureID, int unit);
 
-protected:
 	AIMesh* m_AImesh;
+protected:
+	
 };
 

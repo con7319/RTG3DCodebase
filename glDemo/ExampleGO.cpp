@@ -104,5 +104,13 @@ void ExampleGO::Init(Scene* _scene)
 	}
 	
 }
-
+void ExampleGO::addTexture(GLuint _textureID)  
+{  
+   m_model->addTexture(_textureID);  
+}
+void ExampleGO::addNormalMap(GLuint _normalMapID)
+{
+	m_model->addNormalMap(_normalMapID);
+	
+}
 

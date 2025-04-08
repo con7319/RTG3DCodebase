@@ -142,7 +142,7 @@ FILE: Assets\\cube_highpoly.obj
 }
 
 
-TEXTURES 8
+TEXTURES 10
 {
 TYPE: FIF_BMP
 NAME: BEAST
@@ -167,6 +167,16 @@ FILE: Assets\\Textures\\mountainstone_colour.png
 TYPE: FIF_PNG
 NAME: MOUNTAINNORMAL
 FILE: Assets\\Textures\\mountainstone_nrm.png
+}
+{
+TYPE: FIF_PNG
+NAME: BRICK
+FILE: Assets\\Textures\\BrickTexture.png
+}
+}
+TYPE: FIF_PNG
+NAME: BRICKNMAP
+FILE: Assets\\Textures\\BrickTextureNMap.png
 }
 {
 TYPE: FIF_PNG
@@ -288,3 +298,5 @@ TEXTURE: MOUNTAINDIRT
 SHADER: NORM
 NORMALMAP: MOUNTAINNORMAL
 }
+
+
