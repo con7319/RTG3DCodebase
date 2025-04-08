@@ -2,6 +2,9 @@
 #include "glm/glm.hpp"  
 #include "glm/gtc/matrix_transform.hpp" 
 #include "glm/gtc/type_ptr.hpp"
+#include "core.h"
+#include "helper.h"
+#include "stringHelp.h"
 
 using namespace glm;
 

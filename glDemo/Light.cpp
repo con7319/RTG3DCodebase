@@ -1,8 +1,7 @@
-#include "core.h"
+
 #include "Light.h"
 
-#include "helper.h"
-#include "stringHelp.h"
+
 
 Light::Light()
 {
