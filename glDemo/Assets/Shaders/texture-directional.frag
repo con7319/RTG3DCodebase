@@ -10,11 +10,16 @@ uniform vec3 DIRDir;
 uniform vec3 DIRCol;
 uniform vec3 DIRAmb;
 
-uniform vec3 POINTPos;
-uniform vec3 POINTCol;
-uniform vec3 POINTAmb;
-uniform vec3 POINTAtt;
+struct pointLight {
+	vec3 p_pos;
+	vec3 p_col;
+	vec3 p_attenuation; // x = constant, y = linear, z = quadratic
 
+};
+
+
+uniform pointLight pointLights[10];
+uniform int numPointLights;
 
 in SimplePacket {
 	
@@ -28,32 +33,37 @@ in SimplePacket {
 layout (location=0) out vec4 fragColour;
 
 void main(void) {
+    vec3 N = normalize(inputFragment.surfaceNormal);
+    vec4 surfaceColor = texture2D(texture, inputFragment.texCoord);
 
-	// calculate lambertian (l)
-	vec3 N = normalize(inputFragment.surfaceNormal);
-	float l = dot(N, DIRDir);
+    // Directional light calculation
+    float l = dot(N, DIRDir);
+    //vec3 diffuseColor = surfaceColor.rgb * DIRCol * l;
+    vec3 diffuseColor =  surfaceColor.rgb ;
 
-	// Calculate diffuse brightness / colour for fragment
-	vec4 surfaceColour = texture2D(texture, inputFragment.texCoord);
-	vec3 diffuseColour = surfaceColour.rgb * DIRCol * l;
+    // Point light calculations
+    vec3 finalColor = DIRAmb + diffuseColor;
 
-	vec3 surfaceToLightVec = POINTPos - inputFragment.surfaceWorldPos;
-	vec3 surfaceToLightNormalised = normalize(surfaceToLightVec);
-	vec3 PN = normalize(inputFragment.surfaceNormal);
-	float Pl = dot(PN, surfaceToLightNormalised);
+    for (int i = 0; i < numPointLights; ++i) {
+        vec3 surfaceToLightVec = pointLights[i].p_pos - inputFragment.surfaceWorldPos;
+        vec3 surfaceToLightNormalized = normalize(surfaceToLightVec);
+        float Pl = dot(N, surfaceToLightNormalized);
 
-	float d = length(surfaceToLightVec);
-	float kc = POINTAtt.x;
-	float kl = POINTAtt.y;
-	float kq = POINTAtt.z;
-	float a = 1.0 / ( kc + (kl * d) + (kq * d * d) );
+        float d = length(surfaceToLightVec);
+        float maxDistance = 8.0f;
 
-	
-	vec3 PdiffuseColour = surfaceColour.rgb * POINTCol * Pl * a;
-	vec3 finalColour = DIRAmb + diffuseColour * PdiffuseColour;
-	fragColour = vec4(finalColour, surfaceColour.a);
-
-
-	//fragColour = vec4(DIRAmb,1.0)+vec4(diffuseColour, 1.0);
-	//fragColour = vec4(vec3(l, l, l), 1.0);
+        if (d < maxDistance) {
+            float kc = pointLights[i].p_attenuation.x;
+            float kl = pointLights[i].p_attenuation.y;
+            float kq = pointLights[i].p_attenuation.z;
+            float attenuation = 1.0 / (kc + kl * d + kq * d * d);
+            float smoothAttenuation = smoothstep(0.0, 1.0, attenuation);
+            vec3 PdiffuseColor = surfaceColor.rgb * pointLights[i].p_col * Pl * smoothAttenuation;
+            finalColor += PdiffuseColor;
+        }
+       
+ 
+    }
+    
+    fragColour = vec4(finalColor, surfaceColor.a);
 }

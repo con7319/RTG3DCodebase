@@ -222,6 +222,21 @@ void Scene::SetShaderUniforms(GLuint _shaderprog)
 	//everything needs to know about all the lights
 	for (list<Light*>::iterator it = m_Lights.begin(); it != m_Lights.end(); it++)
 	{
+		if ((*it)->GetType() == "POINT")
+		{
+			//set up shader values for this light
+			(*it)->SetRenderValues(_shaderprog);
+		}
+		else if ((*it)->GetType() == "DIRECTIONAL")
+		{
+			//set up shader values for this light
+			(*it)->SetRenderValues(_shaderprog);
+		}
+		else if ((*it)->GetType() == "SPOT")
+		{
+			//set up shader values for this light
+			(*it)->SetRenderValues(_shaderprog);
+		}
 		(*it)->SetRenderValues(_shaderprog);
 	}
 
@@ -285,6 +300,7 @@ void Scene::Load(ifstream& _file)
 				_file >> dummy >> type; _file.ignore(256, '\n');
 				Light* newLight = LightFactory::makeNewLight(type);
 				newLight->Load(_file);
+				
 
 				m_Lights.push_back(newLight);
 

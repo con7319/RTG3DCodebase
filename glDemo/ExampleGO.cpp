@@ -89,7 +89,7 @@ void ExampleGO::Init(Scene* _scene)
 
 	for (string name : m_texNames)
 	{
-		m_model->addTexture(_scene->GetTexture(name)->GetTexID());
+		addTexture(_scene->GetTexture(name)->GetTexID());
 		m_texList.push_back (_scene->GetTexture(name)->GetTexID());
 	}
 
@@ -98,7 +98,7 @@ void ExampleGO::Init(Scene* _scene)
 	if (normalLoaded) 
 	{
 		
-		m_model->addNormalMap(_scene->GetTexture(m_normalName)->GetTexID());
+		addNormalMap(_scene->GetTexture(m_normalName)->GetTexID());
 
 
 	}

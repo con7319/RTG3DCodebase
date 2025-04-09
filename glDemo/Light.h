@@ -43,12 +43,14 @@ public:
 	//position, main colour and ambient colour for this light
 	virtual void SetRenderValues(unsigned int _prog);
 
+	vec3 m_pos; // position of the light
+	vec3 m_col; // colour of the light
+	vec3 m_amb; // ambient colour of the light
+
 protected:
 	string m_name;
 	string m_type;
 
-	vec3 m_pos; // position of the light
-	vec3 m_col; // colour of the light
-	vec3 m_amb; // ambient colour of the light
+
 
 };
