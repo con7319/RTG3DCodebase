@@ -90,7 +90,12 @@ void ArcballCamera::Load(ifstream& _file)
 	StringHelp::Float(_file, "FAR", m_far);
 }
 #pragma region Accessor methods for stored values
-
+void ArcballCamera::Tick(float _dt, float _width, float _height) {
+	// update the aspect ratio
+	m_aspect = _width / _height;
+	// update the view and projection matrices
+	calculateDerivedValues();
+}
 // return the pivot rotation around the x axis (theta) in degrees
 float ArcballCamera::getTheta() {
 

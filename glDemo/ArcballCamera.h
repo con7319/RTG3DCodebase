@@ -52,6 +52,7 @@ public:
 	void Load(ifstream& _file);
 
 	// Accessor methods for stored properties
+	void Tick(float _dt, float _width, float _height);
 
 	// return the pivot rotation around the x axis (theta) in degrees
 	float getTheta(); 

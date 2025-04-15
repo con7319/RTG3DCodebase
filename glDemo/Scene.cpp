@@ -452,10 +452,7 @@ void Scene::Init()
 		m_useCameraIndex = 0;
 	}
 
-	// Call LevelGen to generate the level
-	//levelGen = new LevelGen(this);
 
-	
 
 	//set up links between everything and GameObjects
 	for (list<GameObject*>::iterator it = m_GameObjects.begin(); it != m_GameObjects.end(); it++)
@@ -507,7 +504,7 @@ void Scene::MouseScroll(float s)
 		FPcam* firstPersonCam = dynamic_cast<FPcam*>(m_useCamera);
 		if (arcballCam)
 		{
-			arcballCam->scaleRadius(s);
+			arcballCam->incrementRadius(s);
 		}
 		if (firstPersonCam)
 		{

@@ -3,6 +3,7 @@
 #include "Light.h"
 #include "DirectionLight.h"
 #include "PointLight.h"
+#include "SpotLight.h"
 
 Light* LightFactory::makeNewLight(std::string _type)
 {
@@ -18,6 +19,10 @@ Light* LightFactory::makeNewLight(std::string _type)
 	else if (_type == "POINT")
 	{
 		return new PointLight();
+	}
+	else if (_type == "SPOT")
+	{
+		return new SpotLight();
 	}
 	else
 	{
