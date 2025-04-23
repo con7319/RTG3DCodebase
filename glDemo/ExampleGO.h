@@ -1,6 +1,7 @@
 #pragma once
 
 #include "GameObject.h"
+#include "AIModel.h"
 #include "array"
 class AIModel;
 class Texture;
@@ -33,6 +34,7 @@ public:
 	
 	void addTexture(GLuint _textureID);
 	void addNormalMap(GLuint _normalMapID);
+	void setTexScale(unsigned int _prog, float _scale);
 	AIModel* m_model;
 
 protected:

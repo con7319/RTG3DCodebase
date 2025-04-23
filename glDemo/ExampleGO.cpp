@@ -113,4 +113,7 @@ void ExampleGO::addNormalMap(GLuint _normalMapID)
 	m_model->addNormalMap(_normalMapID);
 	
 }
-
+void ExampleGO::setTexScale(unsigned int _prog, float _scale)
+{
+	m_model->setTexScale(_prog, _scale);
+}

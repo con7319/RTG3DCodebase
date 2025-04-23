@@ -17,6 +17,7 @@ public:
 	void addTexture(GLuint _textureID);
 	void setupTextures();
 	void setTexture(GLuint textureID, int unit);
+	void setTexScale(unsigned int _prog, float _scale);
 
 	AIMesh* m_AImesh;
 protected:

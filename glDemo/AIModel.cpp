@@ -45,6 +45,15 @@ void AIModel::setupTextures()
 		m_AImesh->setupTextures();
 	}
 }
+void AIModel::setTexScale(unsigned int _prog, float _scale) 
+{
+	if (m_AImesh != nullptr)
+	{
+		m_AImesh->setTexScale(_prog, _scale);
+	}
+
+
+}
 //void AIModel::setTexture(GLuint textureID, int unit) {
 //	if (m_AImesh) {
 //		m_AImesh->setTexture(textureID, unit);

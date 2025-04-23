@@ -59,6 +59,8 @@ void OrthoCam::Tick(float _dt, float _width, float _height) {
 	m_width = _width;
 	m_height = _height;
 
+	aspect_ratio = _width / _height;
+
 	// Ensure proper camera orbit and position
 	glm::vec3 offset = m_pos - m_lookAt; // Calculate offset from the lookAt point
 	float radius = glm::length(offset);   // Get distance from the lookAt point
@@ -116,8 +118,8 @@ void OrthoCam::LookAt(float x, float y)
 	m_pitch -= x * m_sensitivity;
 
 	// Clamp pitch to prevent flipping
-	if (m_pitch > 89.0f) m_pitch = 89.0f;
-	if (m_pitch < -89.0f) m_pitch = -89.0f;
+	/*if (m_pitch > 89.0f) m_pitch = 89.0f;
+	if (m_pitch < -89.0f) m_pitch = -89.0f;*/
 
 	// Keep yaw within 0 to 360 degrees
 	if (m_yaw > 360.0f) m_yaw -= 360.0f;
@@ -134,9 +136,9 @@ void OrthoCam::LookAt(float x, float y)
 
 	//keep camera within range of world
 
-	/*if (glm::length(m_pos - m_lookAt) > m_farPlane) {
+	if (glm::length(m_pos - m_lookAt) > m_farPlane) {
 		m_pos = m_lookAt + glm::normalize(m_pos - m_lookAt) * m_farPlane;
-	}*/
+	}
 
 	// Update forward vector
 	//UpdateForward();
@@ -154,7 +156,7 @@ void OrthoCam::CamZoom(float s)
 void OrthoCam::moveCam(glm::vec3 direction)
 {
 
-	float moveSpeed = 0.01f; // Adjust this value for desired movement speed
+	float moveSpeed = 0.25f; // Adjust this value for desired movement speed
 	float fixedY = m_pos.y;
 
 

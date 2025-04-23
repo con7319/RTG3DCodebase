@@ -18,6 +18,7 @@ public:
     std::string m_ModelName = "CUBEHIGH";
     std::string m_ShaderName = "";
     std::string m_TexName = "";
+	float m_texScale = 4.0f;
 
 
 private:
