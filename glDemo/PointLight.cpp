@@ -25,8 +25,8 @@ void PointLight::Tick(float _dt)
 
 		for (int i = 0; i < lights.size(); ++i)
 		{
-			lights[i].m_pos.z = amplitude * sin(frequency * time);
-
+			lights[i].m_pos.x = amplitude * sin(frequency * time);
+			lights[i].m_pos.y = amplitude * cos(frequency * time);
 		}
 	}
    

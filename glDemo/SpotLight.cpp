@@ -16,14 +16,23 @@ void SpotLight::Tick(float _dt)
 {
 	bool movePoint = false;
 	if (movePoint) {
-		static float time = 0.0f;
-		time += _dt;
-		float amplitude = 5.0f; // Amplitude of oscillation
-		float frequency = 3.0f; // Frequency of oscillation
-		for (int i = 0; i < lights.size(); ++i)
-		{
-			lights[i].m_pos.z = amplitude * sin(frequency * time);
-		}
+        static float time = 0.0f;
+        time += _dt;
+        float amplitude = 5.0f; // Amplitude of oscillation
+        float frequency = 3.0f; // Frequency of oscillation
+        for (int i = 0; i < lights.size(); ++i)
+        {
+        // Update position with oscillation
+        //lights[i].m_pos.z = amplitude * sin(frequency * time);
+
+        // Update direction to rotate over time
+        float rotationSpeed = 4.0f; // Speed of rotation
+        float angle = rotationSpeed * time;
+        lights[i].m_direction.x = sin(angle);
+        lights[i].m_direction.y = cos(angle);
+        lights[i].m_direction.z = 0.0f; // Keep direction in the XY plane
+        }
+
 	}
 }
 void SpotLight::Load(ifstream& _file) 
