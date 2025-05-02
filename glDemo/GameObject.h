@@ -54,7 +54,7 @@ protected:
 	glm::mat4	m_worldMatrix;
 
 	GLuint m_ShaderProg;
-
+	string m_renderName;
 	RenderPass m_RP = RP_OPAQUE;
 };
 

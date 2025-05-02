@@ -38,11 +38,11 @@ void AIModel::addTexture(GLuint _textureID)
 	}
 }
 
-void AIModel::setupTextures()
+void AIModel::setupTextures(unsigned int _prog)
 {
 	if (m_AImesh != nullptr)
 	{
-		m_AImesh->setupTextures();
+		m_AImesh->setupTextures(_prog);
 	}
 }
 void AIModel::setTexScale(unsigned int _prog, float _scale) 

@@ -15,7 +15,7 @@ public:
 	virtual void Render();
 	void addNormalMap(GLuint _normalMapID);
 	void addTexture(GLuint _textureID);
-	void setupTextures();
+	void setupTextures(unsigned int _prog);
 	void setTexture(GLuint textureID, int unit);
 	void setTexScale(unsigned int _prog, float _scale);
 

@@ -155,7 +155,7 @@ void AIMesh::addNormalMap(std::string _filename, FREE_IMAGE_FORMAT _format)
 
 // Rendering functions
 
-void AIMesh::setupTextures()
+void AIMesh::setupTextures(unsigned int _prog)
 {
 	if (m_meshTexCoordBuffer != 0) {
 
@@ -165,12 +165,14 @@ void AIMesh::setupTextures()
 
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, m_textureID);
+			glUniform1i(glGetUniformLocation(_prog, "texture"), 0);
 
 			//  *** normal mapping ***  check if normal map added - if so bind to texture unit 1
 			if (m_normalMapID != 0) {
 
 				glActiveTexture(GL_TEXTURE1);
 				glBindTexture(GL_TEXTURE_2D, m_normalMapID);
+				glUniform1i(glGetUniformLocation(_prog, "normalMap"), 1);
 
 				// Restore default
 				glActiveTexture(GL_TEXTURE0);

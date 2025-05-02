@@ -1,42 +1,34 @@
-//normal map vertex shader
 #version 450 core
+
+layout(location = 0) in vec3 aPos;
+layout(location = 2) in vec2 aTexCoord;
+layout(location = 3) in vec3 aNormal;
+layout(location = 4) in vec3 aTangent;
+layout(location = 5) in vec3 aBitangent;
+
+out vec3 surfaceWorldPos;
+out vec3 surfaceNormal;
+out vec2 texCoord;
+out mat3 TBN; // Tangent, Bitangent, Normal
 
 uniform mat4 modelMatrix;
 uniform mat4 viewMatrix;
 uniform mat4 projMatrix;
 
-layout (location=0) in vec3 vertexPos;
-layout (location=1) in vec3 vertexTangent;
-layout (location=2) in vec2 vertexTexCoord;
-layout (location=3) in vec3 vertexNormal;
+void main()
+{
+  vec4 worldPos = modelMatrix * vec4(aPos, 1.0);
+  surfaceWorldPos = worldPos.xyz;
+  texCoord = aTexCoord;
 
-out SimplePacket {
-    vec3 surfaceWorldPos;
-    vec3 surfaceNormal;
-    vec2 texCoord;
-    vec3 T;
-    vec3 B;
-    vec3 N;
-} outputVertex;
+  vec3 T = normalize(vec3(modelMatrix * vec4(aTangent, 0.0)));
+  vec3 B = normalize(vec3(modelMatrix * vec4(aBitangent, 0.0)));
+  vec3 N = normalize(vec3(modelMatrix * vec4(aNormal, 0.0)));
 
-void main(void) {
-    outputVertex.texCoord = vertexTexCoord;
+  TBN = mat3(T, B, N);
+  
 
-    // Transform normal, tangent, and compute bitangent
-    mat3 normalMatrix = transpose(inverse(mat3(modelMatrix)));
+  surfaceNormal = normalize(vec3(mat3(modelMatrix) * aNormal));
 
-    vec3 N = normalize(normalMatrix * vertexNormal);
-    vec3 T = normalize(normalMatrix * vertexTangent);
-    vec3 B = cross(N, T); // Compute bitangent
-
-    outputVertex.N = N;
-    outputVertex.T = T;
-    outputVertex.B = B;
-
-    // Transform position
-    vec4 worldCoord = modelMatrix * vec4(vertexPos, 1.0);
-    outputVertex.surfaceWorldPos = worldCoord.xyz;
-
-    gl_Position = projMatrix * viewMatrix * worldCoord;
+  gl_Position = projMatrix * viewMatrix * worldPos;
 }
-

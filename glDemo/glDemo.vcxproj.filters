@@ -237,10 +237,10 @@
     <None Include="Assets\Shaders\flatColour.vert">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="Normal-map.vert">
+    <None Include="Assets\Shaders\Normal-map.frag">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="Assets\Shaders\Normal-map.frag">
+    <None Include="Assets\Shaders\Normal-map.vert">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

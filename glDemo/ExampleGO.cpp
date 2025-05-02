@@ -51,8 +51,14 @@ void ExampleGO::PreRender()
 	GameObject::PreRender();
 
 	//only thing I need to do is tell the shader about my texture
-	
-	m_model->setupTextures();
+	if (normalLoaded) {
+
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, m_NormalMap);
+
+	}
+
+	m_model->setupTextures(m_ShaderProg);
 	/*glEnable(GL_TEXTURE_2D);
 
 	glActiveTexture(GL_TEXTURE0);
@@ -62,15 +68,7 @@ void ExampleGO::PreRender()
 	//TODO: this does sort of replicate stuff in the AIMesh class, could we make them more compatible.
 
 	//TODO: NORMAL MAPS!
-	/*if (normalLoaded) {
-
-		
-		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, m_NormalMap);
-		glUniform1i(glGetUniformLocation(m_ShaderProg, "normalMap"), 1);
-
-
-	}*/
+	
 
 	//glDisable(GL_TEXTURE_2D);
 }
@@ -99,6 +97,7 @@ void ExampleGO::Init(Scene* _scene)
 	{
 		
 		addNormalMap(_scene->GetTexture(m_normalName)->GetTexID());
+		std::cout << "Normal map loaded: " << m_normalName << std::endl;
 
 
 	}

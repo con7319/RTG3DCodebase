@@ -21,6 +21,14 @@ void GameObject::Load(ifstream& _file)
 	StringHelp::Float3(_file, "ROT", m_rot.x, m_rot.y, m_rot.z);
 	StringHelp::Float3(_file, "SCALE", m_scale.x, m_scale.y, m_scale.z);
 	StringHelp::Float3(_file, "ROT INC", m_rot_incr.x, m_rot_incr.y, m_rot_incr.z);
+	StringHelp::String(_file, "RENPASS", m_renderName);
+	if (m_renderName == "RP_OPAQUE") {
+		m_RP = RP_OPAQUE;
+	}
+	else if (m_renderName == "RP_TRANSPARENT") {
+		m_RP = RP_TRANSPARENT;
+	}
+	
 }
 
 void GameObject::Tick(float _dt)

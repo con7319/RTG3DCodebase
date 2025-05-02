@@ -205,16 +205,44 @@ void Scene::Render()
 				}
 			}
 
-			//levelGen->Render();
+			
 			//set any uniform shader values for the actual model
 			(*it)->PreRender();
 
 			//actually render the GameObject
 			(*it)->Render();
 		}
+
+		//TODO: now do the same for RP_TRANSPARENT here
+
+		if ((*it)->GetRP() & RP_TRANSPARENT)
+		{
+			//Enable blending
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			// Disable depth writes
+			glDepthMask(GL_FALSE);
+			// Set shader program
+			GLuint SP = (*it)->GetShaderProg();
+			glUseProgram(SP);
+			// Set up uniform shader values for the current camera
+			m_useCamera->SetRenderValues(SP);
+			// Set up uniform shader values for lights and other global settings
+			SetShaderUniforms(SP);
+			// Set any uniform shader values for the actual model
+			(*it)->PreRender();
+			// Render the GameObject
+			(*it)->Render();
+			// Re-enable depth writes
+			glDepthMask(GL_TRUE);
+			// Disable blending
+			glDisable(GL_BLEND);
+		}
 	}
 
-	//TODO: now do the same for RP_TRANSPARENT here
+	
+
+
 }
 
 void Scene::SetShaderUniforms(GLuint _shaderprog)

@@ -32,7 +32,7 @@ public:
 
 	void setTexture(GLuint textureID, int unit);
 
-	void setupTextures();
+	void setupTextures(unsigned int _prog);
 	void render();
 	void setTexScale(unsigned int _prog, float _scale);
 };
