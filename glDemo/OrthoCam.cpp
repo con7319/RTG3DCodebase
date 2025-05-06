@@ -36,7 +36,7 @@ OrthoCam::OrthoCam(glm::vec3 m_pos, glm::vec3 m_lookAt, float _fovY, float _aspe
 
 	this->m_yaw = -90.0f;
 	this->m_pitch = 0.0f;
-	this->m_sensitivity = 0.1f;
+	this->m_sensitivity = 0.5f;
 
 
 
@@ -65,11 +65,11 @@ void OrthoCam::Tick(float _dt, float _width, float _height) {
 	glm::vec3 offset = m_pos - m_lookAt; // Calculate offset from the lookAt point
 	float radius = glm::length(offset);   // Get distance from the lookAt point
 
-	float orbitAngle = glm::radians(m_yaw);  // Convert yaw to radians
+	float orbitAngle = glm::radians(45.0f);  // Convert yaw to radians
 
 	// Update position based on orbit angle, ensuring correct distance (radius)
-	/*m_pos.x = m_lookAt.x + radius * cos(orbitAngle);
-	m_pos.z = m_lookAt.z + radius * sin(orbitAngle);*/
+	m_pos.x = m_lookAt.x + radius * cos(orbitAngle);
+	//m_pos.z = m_lookAt.z + radius * sin(orbitAngle);
 
 	// Keep the y-value fixed (or adjust it as needed for scene size)
 	//m_pos.y = m_lookAt.y + 10.0f;  // Fixed height above the lookAt point
@@ -156,7 +156,7 @@ void OrthoCam::CamZoom(float s)
 void OrthoCam::moveCam(glm::vec3 direction)
 {
 
-	float moveSpeed = 0.25f; // Adjust this value for desired movement speed
+	float moveSpeed = 2.0f; // Adjust this value for desired movement speed
 	float fixedY = m_pos.y;
 
 

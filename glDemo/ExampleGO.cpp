@@ -58,6 +58,16 @@ void ExampleGO::PreRender()
 
 	}
 
+	if (m_RP == RP_TRANSPARENT)
+	{
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	}
+	else
+	{
+		glDisable(GL_BLEND);
+	}
+
 	m_model->setupTextures(m_ShaderProg);
 	/*glEnable(GL_TEXTURE_2D);
 

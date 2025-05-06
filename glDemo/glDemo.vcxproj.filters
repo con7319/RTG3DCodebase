@@ -223,6 +223,9 @@
     <Text Include="manifest.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="Levels.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Shaders\texture-directional.frag">

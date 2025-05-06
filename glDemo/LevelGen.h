@@ -11,9 +11,13 @@ public:
     ~LevelGen();
     void Render();
     void generateLevel(const std::array<std::array<int, 5>, 5>& levelMatrix, glm::vec3& origin);
-    void GenerateGrid(const std::array<std::array<int, 5>, 5>& levelLayout);
+    void GenerateGrid();
+    void generateFloor(const glm::vec3& origin, const std::array<std::array<int, 5>, 5>& floorLayout);
     const std::vector<vec3>& getLocations1() const;
     const std::vector<vec3>& getLocations2() const;
+	void LoadLevels(const std::string& filename);
+
+    
 
     std::string m_ModelName = "CUBEHIGH";
     std::string m_ShaderName = "";
@@ -21,10 +25,15 @@ public:
 	float m_texScale = 4.0f;
 
 
+       
 private:
    
 
     std::vector<vec3> locations1;
     std::vector<vec3> locations2;
+    std::array<std::array<int, 5>, 5> levelLayout;
+    std::array<std::array<int, 5>, 5> floorLayout;
+    std::vector<std::string> levelNames; 
+    std::vector<std::array<std::array<int, 5>, 5>> levels;
     void clearLevel();
 };

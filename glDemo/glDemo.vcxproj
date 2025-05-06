@@ -203,6 +203,7 @@
     <ClCompile Include="TextureLoader.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="Levels.txt" />
     <Text Include="manifest.txt" />
   </ItemGroup>
   <ItemGroup>

@@ -56,7 +56,8 @@ void main()
 
     // Sample the base texture for the surface color
     vec4 surfaceColor = texture(texture, scaledTexCoord.xy);
-
+    
+   
     // Initialize final color
     vec3 finalColor = vec3(0.0);
 
@@ -109,7 +110,7 @@ void main()
             float attenuation = 1.0 / (kc + kl * d + kq * d * d);
 
             vec3 spotDir = normalize(-spotLights[i].s_dir);
-            float theta = dot(surfaceToLightNormalized, spotDir);
+            float theta = dot(-surfaceToLightNormalized, spotDir);
             float epsilon = spotLights[i].s_cutoff - spotLights[i].s_oCutoff;
             float intensity = clamp((theta - spotLights[i].s_oCutoff) / epsilon, 0.0, 1.0);
 

@@ -25,7 +25,7 @@ void DirectionLight::Load(ifstream& _file)
 		StringHelp::Float3(_file, "POS", light.m_pos.x, light.m_pos.y, light.m_pos.z);
 		StringHelp::Float3(_file, "COL", light.m_col.x, light.m_col.y, light.m_col.z);
 		StringHelp::Float3(_file, "AMB", light.m_amb.x, light.m_amb.y, light.m_amb.z);
-		StringHelp::Float3(_file, "ATT", light.m_dir.x, light.m_dir.y, light.m_dir.z);
+		StringHelp::Float3(_file, "DIR", light.m_dir.x, light.m_dir.y, light.m_dir.z);
 		lights.push_back(light);
 
 	}
@@ -40,11 +40,12 @@ void DirectionLight::SetRenderValues(unsigned int _prog)
 	//still need to tell the shader about the basic light data
 	Light::SetRenderValues(_prog);
 
-	GLint loc;
-	string dirString = m_name + "Dir";//only thing I add is a direction
+	SetDirLights(_prog, lights);
+	//GLint loc;
+	//string dirString = m_name + "Dir";//only thing I add is a direction
 
-	if (Helper::SetUniformLocation(_prog, dirString.c_str(), &loc))
-		glUniform3fv(loc, 1, glm::value_ptr(m_direction));
+	//if (Helper::SetUniformLocation(_prog, dirString.c_str(), &loc))
+	//	glUniform3fv(loc, 1, glm::value_ptr(m_direction));
 }
 
 void DirectionLight::SetDirLights(unsigned int shaderProgram, const std::vector<dirLight>& lights) {
@@ -61,11 +62,11 @@ void DirectionLight::SetDirLights(unsigned int shaderProgram, const std::vector<
 		GLint posLoc = glGetUniformLocation(shaderProgram, (baseName + "d_pos").c_str());
 		GLint colLoc = glGetUniformLocation(shaderProgram, (baseName + "d_col").c_str());
 		GLint ambLoc = glGetUniformLocation(shaderProgram, (baseName + "d_amb").c_str());
-		GLint attLoc = glGetUniformLocation(shaderProgram, (baseName + "d_attenuation").c_str());
+		GLint dirLoc = glGetUniformLocation(shaderProgram, (baseName + "d_dir").c_str());
 
 		glUniform3fv(posLoc, 1, &lights[i].m_pos[0]);
 		glUniform3fv(colLoc, 1, &lights[i].m_col[0]);
 		glUniform3fv(ambLoc, 1, &lights[i].m_amb[0]);
-		glUniform3fv(attLoc, 1, &lights[i].m_dir[0]);
+		glUniform3fv(dirLoc, 1, &lights[i].m_dir[0]);
 	}
 }
