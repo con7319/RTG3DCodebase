@@ -83,7 +83,7 @@ LevelGen::LevelGen()
     generateLevel(Level2, newOrigin2);
     generateLevel(Level3, origin);*/
     LoadLevels("Levels.txt");
-    generateFloor(glm::vec3(0.0f, -1.0f, 0.0f), floorLayout);
+    generateFloor(glm::vec3(0.0f, -1.0f, 0.0f), levelLayout);
 	GenerateGrid();
 }
 
@@ -108,7 +108,7 @@ void LevelGen::LoadLevels(const std::string& filename)
   std::array<std::array<int, 5>, 5> currentLevel = {};
   int rowIdx = 0;  
   bool readingLevel = false;  
-  std::vector<std::array<std::array<int, 5>, 5>> layoutVec;  
+  
  
 
   levels.clear();  
@@ -127,10 +127,7 @@ void LevelGen::LoadLevels(const std::string& filename)
           if (readingLevel && rowIdx > 0) {  
               // Save the previous level if we were reading one  
               if (currentName == "LevelLayout") {  
-                  layoutVec.push_back(currentLevel);  
-              }  
-              else if (currentName == "FloorLayout") { // Added for FloorLayout  
-                  floorLayout = currentLevel;  
+                  LevelLayout.push_back(currentLevel);  
               }  
               else {  
                   levels.push_back(currentLevel);  
@@ -144,10 +141,7 @@ void LevelGen::LoadLevels(const std::string& filename)
           // End of level definition  
           if (readingLevel && rowIdx > 0) {  
               if (currentName == "LevelLayout") {  
-                  layoutVec.push_back(currentLevel);  
-              }  
-              else if (currentName == "FloorLayout") { // Added for FloorLayout  
-                  floorLayout = currentLevel;  
+                  LevelLayout.push_back(currentLevel);
               }  
               else {  
                   levels.push_back(currentLevel);  
@@ -195,10 +189,7 @@ void LevelGen::LoadLevels(const std::string& filename)
   // If the file doesn't end with a ']' on its own line, check if we need to add the last level  
   if (readingLevel && rowIdx > 0) {  
       if (currentName == "LevelLayout") {  
-          layoutVec.push_back(currentLevel);  
-      }  
-      else if (currentName == "FloorLayout") { // Added for FloorLayout  
-          floorLayout = currentLevel;  
+          LevelLayout.push_back(currentLevel);
       }  
       else {  
           levels.push_back(currentLevel);  
@@ -208,28 +199,33 @@ void LevelGen::LoadLevels(const std::string& filename)
   file.close();  
 
   // If we parsed a LevelLayout, use it for GenerateGrid  
-  if (!layoutVec.empty()) {  
-      levelLayout = layoutVec[0];  
+  if (!LevelLayout.empty()) {
+      levelLayout = LevelLayout[0];
   }  
 
   // Use the parsed FloorLayout for generateFloor  
  
 }
 
-void LevelGen::generateFloor(const glm::vec3& origin, const std::array<std::array<int, 5>, 5>& floorLayout) 
+void LevelGen::generateFloor(const glm::vec3& origin, const std::array<std::array<int, 5>, 5>& levelLayout)
 {
-   int rows = floorLayout.size();
-   int cols = floorLayout[0].size();
+   int rows = levelLayout.size();
+   int cols = levelLayout[0].size();
    float offsetX = (cols - 1) * 2.5f;
    float offsetZ = (rows - 1) * 2.5f;
 
    for (int i = 0; i < rows; ++i) {
        for (int j = 0; j < cols; ++j) {
            glm::vec3 newOrigin(origin.x + j * 5.0f - offsetX, origin.y, origin.z + i * 5.0f - offsetZ);
-           if (floorLayout[i][j] >= 0 && floorLayout[i][j] < levels.size()) {
-               std::cout << "Generating floor: " << floorLayout[i][j]
+           if (levelLayout[i][j] >= 0 && levelLayout[i][j] < levels.size()) {
+               std::cout << "Generating floor: " << levelLayout[i][j]
                    << " at Origin: (" << newOrigin.x << ", " << newOrigin.y << ", " << newOrigin.z << ")" << std::endl;
-               generateLevel(levels[floorLayout[i][j]], newOrigin);
+               generateLevelNeg(levels[levelLayout[i][j]], newOrigin);
+           }
+           if (levelLayout[i][j] == 7) {  
+              std::cout << "Generating floor: " << levelLayout[i][j]  
+                        << " at Origin: (" << newOrigin.x << ", " << newOrigin.y << ", " << newOrigin.z << ")" << std::endl;  
+              generateLevel(levels[levelLayout[i][j]], newOrigin);  
            }
        }
    }
@@ -310,7 +306,20 @@ void LevelGen::generateLevel(const std::array<std::array<int, 5>, 5>& levelMatri
         }
     }
 }
-
+void LevelGen::generateLevelNeg(const std::array<std::array<int, 5>, 5>& levelMatrix, glm::vec3& origin) {
+    int rows = levelMatrix.size();
+    int cols = levelMatrix[0].size();
+    float offsetX = cols / 2.0f;
+    float offsetZ = rows / 2.0f;
+    for (int i = 0; i < rows; ++i) {
+        for (int j = 0; j < cols; ++j) {
+            glm::vec3 newPos(j - offsetX + origin.x, origin.y, i - offsetZ + origin.z);
+            if (levelMatrix[i][j] < 1) {
+                locations1.push_back(newPos);
+            }
+        }
+    }
+}
 void LevelGen::GenerateGrid() {
    
    int rows = levelLayout.size();  

@@ -11,6 +11,7 @@ public:
     ~LevelGen();
     void Render();
     void generateLevel(const std::array<std::array<int, 5>, 5>& levelMatrix, glm::vec3& origin);
+    void generateLevelNeg(const std::array<std::array<int, 5>, 5>& levelMatrix, glm::vec3& origin);
     void GenerateGrid();
     void generateFloor(const glm::vec3& origin, const std::array<std::array<int, 5>, 5>& floorLayout);
     const std::vector<vec3>& getLocations1() const;
@@ -32,7 +33,7 @@ private:
     std::vector<vec3> locations1;
     std::vector<vec3> locations2;
     std::array<std::array<int, 5>, 5> levelLayout;
-    std::array<std::array<int, 5>, 5> floorLayout;
+    std::vector<std::array<std::array<int, 5>, 5>> LevelLayout;
     std::vector<std::string> levelNames; 
     std::vector<std::array<std::array<int, 5>, 5>> levels;
     void clearLevel();
