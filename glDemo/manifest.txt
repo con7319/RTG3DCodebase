@@ -151,7 +151,7 @@ POS: 10.0 5.0 0.0
 COL: 1.0 1.0 0.0  
 ATT: 1.0 0.1 0.001 
 
-MODELS 6
+MODELS 7
 {
 TYPE: AI
 NAME: BEAST
@@ -180,9 +180,14 @@ TYPE: AI
 NAME: SHADERCUBE
 FILE: Assets\\cube_highpoly.obj
 }
+{
+TYPE: AI
+NAME: GHOST
+FILE: Assets\\ghost.obj
+}
 
 
-TEXTURES 10
+TEXTURES 12
 {
 TYPE: FIF_BMP
 NAME: BEAST
@@ -200,6 +205,11 @@ FILE: Assets\\Textures\\player1_ship.png
 }
 {
 TYPE: FIF_PNG
+NAME: SHIP
+FILE: Assets\\Textures\\player1_ship.png
+}
+{
+TYPE: FIF_PNG
 NAME: MOUNTAINCOLOUR
 FILE: Assets\\Textures\\mountainstone_colour.png
 }
@@ -207,6 +217,11 @@ FILE: Assets\\Textures\\mountainstone_colour.png
 TYPE: FIF_PNG
 NAME: MOUNTAINNORMAL
 FILE: Assets\\Textures\\mountainstone_nrm.png
+}
+{
+TYPE: FIF_PNG
+NAME: GHOSTTEXTURE
+FILE: Assets\\Textures\\ghosttexture.png
 }
 {
 TYPE: FIF_PNG
@@ -251,7 +266,7 @@ VERTFILE: Assets\\Shaders\\Normal-map.vert
 FRAGFILE: Assets\\Shaders\\Normal-map.frag
 }
 
-GAMEOBJECTS 6
+GAMEOBJECTS 7
 {
 TYPE: WANDERER
 NAME: BEAST
@@ -334,6 +349,19 @@ SHADER: NORM
 NOMAPS: 2
 NORMALMAP: MOUNTAINNORMAL
 NORMALMAP: BRICKNMAP
+}
+{
+TYPE: WANDERER
+NAME: GHOST
+POS: 0.0 0.0 0.0
+ROT: 0.0 0.0 0.0
+SCALE: 0.5 0.5 0.5
+ROTINC: 0.0 0.0 0.0
+RENPASS: RP_OPAQUE
+MODEL: GHOST
+NOTEX: 1
+TEXTURE: GHOSTTEXTURE
+SHADER: TEXDIR
 }
 
 
