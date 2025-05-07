@@ -31,6 +31,9 @@ public:
 	//added getter and setter for model
 	AIModel* GetModel() const { return m_model; }
 	void SetModel(AIModel* model) { m_model = model; }
+
+	virtual void SetPos(glm::vec3 _pos) { m_pos = _pos; }
+	virtual glm::vec3 GetPos() const { return m_pos; }
 	
 	void addTexture(GLuint _textureID);
 	void addNormalMap(GLuint _normalMapID);
@@ -42,9 +45,12 @@ protected:
 	string m_ShaderName, m_TexName, m_ModelName, m_normalName;
 	bool normalLoaded;
 	float m_NoTex;
+	float m_NoMap;
 	GLuint m_texture;
+	std::vector<std::string> m_normNames;
 	std::vector<std::string> m_texNames;
 	std::vector<GLuint> m_texList;
+	std::vector<GLuint> m_normList;
 	
 	Scene* m_scene;
 	GLuint m_NormalMap;

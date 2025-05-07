@@ -222,11 +222,7 @@ void LevelGen::generateFloor(const glm::vec3& origin, const std::array<std::arra
                    << " at Origin: (" << newOrigin.x << ", " << newOrigin.y << ", " << newOrigin.z << ")" << std::endl;
                generateLevelNeg(levels[levelLayout[i][j]], newOrigin);
            }
-           if (levelLayout[i][j] == 7) {  
-              std::cout << "Generating floor: " << levelLayout[i][j]  
-                        << " at Origin: (" << newOrigin.x << ", " << newOrigin.y << ", " << newOrigin.z << ")" << std::endl;  
-              generateLevel(levels[levelLayout[i][j]], newOrigin);  
-           }
+           
        }
    }
 }
@@ -315,7 +311,7 @@ void LevelGen::generateLevelNeg(const std::array<std::array<int, 5>, 5>& levelMa
         for (int j = 0; j < cols; ++j) {
             glm::vec3 newPos(j - offsetX + origin.x, origin.y, i - offsetZ + origin.z);
             if (levelMatrix[i][j] < 1) {
-                locations1.push_back(newPos);
+                locations3.push_back(newPos);
             }
         }
     }
@@ -341,11 +337,12 @@ void LevelGen::GenerateGrid() {
 void LevelGen::Render()
 {
 	
-	ExampleGO::addNormalMap(ExampleGO::m_NormalMap);
+	//ExampleGO::addNormalMap(ExampleGO::m_NormalMap);
     for (const auto& location : locations1)
     {
 		ExampleGO::addTexture(m_texList[0]);
-		
+        ExampleGO::addNormalMap(m_normList[0]);
+        ExampleGO::setTexScale(m_ShaderProg, m_texScale);
         m_worldMatrix = glm::translate(mat4(1.0), vec3(location));
         m_worldMatrix = glm::scale(m_worldMatrix, glm::vec3(m_scale));
         ExampleGO::PreRender();
@@ -355,6 +352,17 @@ void LevelGen::Render()
     for (const auto& location : locations2)
     {
         ExampleGO::addTexture(m_texList[1]);
+		ExampleGO::addNormalMap(m_normList[0]);
+        ExampleGO::setTexScale(m_ShaderProg, m_texScale);
+        m_worldMatrix = glm::translate(mat4(1.0), vec3(location));
+        m_worldMatrix = glm::scale(m_worldMatrix, glm::vec3(m_scale));
+        ExampleGO::PreRender();
+        ExampleGO::Render();
+    }
+    for (const auto& location : locations3)
+    {
+        ExampleGO::addTexture(m_texList[2]);
+        ExampleGO::addNormalMap(m_normList[1]);
         ExampleGO::setTexScale(m_ShaderProg, m_texScale);
         m_worldMatrix = glm::translate(mat4(1.0), vec3(location));
         m_worldMatrix = glm::scale(m_worldMatrix, glm::vec3(m_scale));
@@ -373,6 +381,10 @@ const std::vector<vec3>& LevelGen::getLocations1() const
 const std::vector<vec3>& LevelGen::getLocations2() const
 {
     return locations2;
+}
+const std::vector<vec3>& LevelGen::getLocations3() const
+{
+    return locations3;
 }
 
 void LevelGen::clearLevel()

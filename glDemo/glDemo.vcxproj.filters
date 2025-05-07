@@ -132,6 +132,9 @@
     <ClInclude Include="SpotLight.h">
       <Filter>Scene Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Wanderer.h">
+      <Filter>Scene Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -216,6 +219,9 @@
       <Filter>Scene Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SpotLight.cpp">
+      <Filter>Scene Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Wanderer.cpp">
       <Filter>Scene Source Files</Filter>
     </ClCompile>
   </ItemGroup>

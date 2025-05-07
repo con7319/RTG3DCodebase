@@ -33,8 +33,15 @@ void ExampleGO::Load(ifstream& _file)
 
    if (m_ShaderName == "NORM") {
 	   
-	   StringHelp::String(_file, "NORMALMAP", m_normalName);
-	   normalLoaded = true;	
+	   StringHelp::Float(_file, "NOMAPS", m_NoMap);
+	   for (int i = 0; i < m_NoMap; ++i)
+	   {
+		   std::string NormName;
+		   StringHelp::String(_file, "NORMALMAP", NormName);
+		   m_normNames.push_back(NormName);
+		   
+	   }
+	   normalLoaded = true;
    }
    else {
 	   
@@ -105,10 +112,13 @@ void ExampleGO::Init(Scene* _scene)
 
 	if (normalLoaded) 
 	{
-		
-		addNormalMap(_scene->GetTexture(m_normalName)->GetTexID());
-		std::cout << "Normal map loaded: " << m_normalName << std::endl;
+		for (string normn : m_normNames)
+		{
+			addNormalMap(_scene->GetTexture(normn)->GetTexID());
+			m_normList.push_back(_scene->GetTexture(normn)->GetTexID());
+			std::cout << "Normal map loaded: " << normn << std::endl;
 
+		}
 
 	}
 	
