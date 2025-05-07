@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "ExampleGO.h"
 #include "LevelGen.h"
+#include "Wanderer.h"
 #include <assert.h>
 
 using std::string;
@@ -20,6 +21,10 @@ GameObject* GameObjectFactory::makeNewGO(string _type)
 	else if (_type == "LEVELGEN")
 	{
 		return new LevelGen();
+	}
+	else if (_type == "WANDERER")
+	{
+		return new Wanderer();
 	}
 	else
 	{

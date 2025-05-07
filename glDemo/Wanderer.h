@@ -16,16 +16,21 @@ public:
   virtual ~Wanderer();  
 
   // Update method for wandering behavior  
-  void Tick(float deltaTime) override;  
-
-
+  void Tick(float deltaTime);
   
 
 private:  
   // Helper method to calculate random movement  
-  void calculateWanderDirection(); 
+  void calculateWanderDirection();
+
+  bool isWallBetween(const glm::vec3& start, const glm::vec3& end);
+  
+
   void loadWalls(const std::string& filename);
   void CalcWallPos();
+
+  string file = "Levels.txt";
+  bool fileLoaded = false;
 
   // Variables for wandering logic  
   float wanderRadius;  
@@ -38,6 +43,7 @@ private:
   std::vector<std::string> levelNames;
   std::vector<std::array<std::array<int, 5>, 5>> levels;
   std::vector<vec3> Wallloc;
+  std::vector<vec3> availWallLoc;
    
   glm::vec3 m_prevPos;
   glm::vec3 m_targetPos;
