@@ -65,6 +65,7 @@ public:
 	void MouseScroll(float s);
 
 	void MoveCam(glm::vec3 direction);
+	void SpotLightsLookAt();
 
 protected:
 

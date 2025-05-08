@@ -23,8 +23,6 @@ private:
   // Helper method to calculate random movement  
   void calculateWanderDirection();
 
-  bool isWallBetween(const glm::vec3& start, const glm::vec3& end);
-  
 
   void loadWalls(const std::string& filename);
   void CalcWallPos();
@@ -33,7 +31,7 @@ private:
   bool fileLoaded = false;
 
   // Variables for wandering logic  
-  float wanderRadius;  
+  float wanderRadius = 2.0f;  
   float wanderDistance;  
   float wanderJitter;  
   glm::vec2 currentDirection;

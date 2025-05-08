@@ -252,5 +252,35 @@
     <None Include="Assets\Shaders\Normal-map.vert">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="Wobble.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Wobble.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Assets\Shaders\Twist.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Assets\Shaders\Twist.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Assets\Shaders\Swirl.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Assets\Shaders\Swirl.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Assets\Shaders\Spiky.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Assets\Shaders\Spiky.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Assets\Shaders\worm.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Assets\Shaders\worm.vert">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

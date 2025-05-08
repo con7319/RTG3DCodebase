@@ -288,6 +288,9 @@ void keyboardHandler(GLFWwindow* _window, int _key, int _scancode, int _action, 
 			dDown = false;
 			updateKeyState(m_keyState);
 			break;
+		case GLFW_KEY_F:
+			g_Scene->SpotLightsLookAt();
+			break;
 		default:
 		{
 		}
@@ -405,4 +408,9 @@ void mouseEnterHandler(GLFWwindow* _window, int _entered)
 {
 }
 
+void SpotLookat()
+{
+	g_Scene->SpotLightsLookAt();
+
+}
 #pragma endregion

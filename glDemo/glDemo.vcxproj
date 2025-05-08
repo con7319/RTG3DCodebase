@@ -213,8 +213,18 @@
     <None Include="Assets\Shaders\flatColour.vert" />
     <None Include="Assets\Shaders\Normal-map.frag" />
     <None Include="Assets\Shaders\Normal-map.vert" />
+    <None Include="Assets\Shaders\Spiky.frag" />
+    <None Include="Assets\Shaders\Spiky.vert" />
+    <None Include="Assets\Shaders\Swirl.frag" />
+    <None Include="Assets\Shaders\Swirl.vert" />
     <None Include="Assets\Shaders\texture-directional.frag" />
     <None Include="Assets\Shaders\texture-directional.vert" />
+    <None Include="Assets\Shaders\Twist.frag" />
+    <None Include="Assets\Shaders\Twist.vert" />
+    <None Include="Assets\Shaders\worm.frag" />
+    <None Include="Assets\Shaders\worm.vert" />
+    <None Include="Wobble.frag" />
+    <None Include="Wobble.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

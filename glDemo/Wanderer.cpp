@@ -47,6 +47,9 @@ void Wanderer::Tick(float deltaTime)
             if (distance > 0.1f) { // Threshold to stop moving
                 direction /= distance; // Normalize the direction
                 m_pos += direction * deltaTime; // Move towards the target
+
+                float angle = atan2(direction.x, direction.z); // Angle in radians
+                m_rot = (glm::vec3(0.0f, glm::degrees(angle), 0.0f));
             }
             else {
                 m_prevPos = m_pos; // Update previous position
@@ -190,7 +193,7 @@ void Wanderer::loadWalls(const std::string& filename)
 
 void Wanderer::CalcWallPos()
 {
-    glm:vec3 origin(0.0f, 0.0f, 0.0f);
+    glm::vec3 origin = GetPos();
     int rows = levelLayout.size();
     int cols = levelLayout[0].size();
     float offsetX = (cols - 1) * 2.5f;
@@ -220,21 +223,21 @@ void Wanderer::calculateWanderDirection()
     int gridX = static_cast<int>(m_pos.x);
     int gridZ = static_cast<int>(m_pos.z);
 
-    // Define a larger radius for wandering  
-    int wanderRadius = 2; // Increase radius to explore further  
-
-    // Define the positions around the current position within the radius  
+    // Define the immediate surroundings (1-unit radius)
     std::vector<glm::vec3> localPositions;
 
-    for (int offsetZ = -wanderRadius; offsetZ <= wanderRadius; ++offsetZ) {
-        for (int offsetX = -wanderRadius; offsetX <= wanderRadius; ++offsetX) {
+    for (int offsetZ = -1; offsetZ <= 1; ++offsetZ) {
+        for (int offsetX = -1; offsetX <= 1; ++offsetX) {
+            // Skip the current position
+            if (offsetX == 0 && offsetZ == 0) {
+                continue;
+            }
+
             int localX = gridX + offsetX;
             int localZ = gridZ + offsetZ;
 
-            // Ensure the local position is within the 5x5 grid bounds  
-            if (localX >= 0 && localX < 5 && localZ >= 0 && localZ < 5) {
-                localPositions.emplace_back(localX, 0.0f, localZ);
-            }
+            // Add the position to the list of local positions
+            localPositions.emplace_back(localX, 0.0f, localZ);
         }
     }
 
@@ -242,17 +245,33 @@ void Wanderer::calculateWanderDirection()
 
     for (const auto& pos : localPositions) {
         bool isWall = false; // Flag to check if the position is a wall  
+
+        // Check if the position is a wall
         for (const auto& wall : Wallloc) {
             if (pos.x == wall.x && pos.z == wall.z) {
-                // Wall found at this position  
                 isWall = true; // Mark as a wall  
                 break; // No need to check further walls  
             }
         }
+
+        // Exclude walls and the previous position
         if (!isWall && pos != m_prevPos) {
-            // No wall at this position and not the previous position, add to available positions  
-            availWallLoc.push_back(glm::vec3(pos.x, m_pos.y, pos.z));
+            // Check if the position is in a similar direction to the previous movement
+                availWallLoc.push_back(glm::vec3(pos.x, m_pos.y, pos.z));
+            
         }
+    }
+
+    // Debug output to verify available positions
+    std::cout << "Available positions: " << availWallLoc.size() << std::endl;
+    for (const auto& pos : availWallLoc) {
+        std::cout << "Position: (" << pos.x << ", " << pos.y << ", " << pos.z << ")" << std::endl;
+    }
+
+    // Fallback: If no positions are available, reset to the previous position
+    if (availWallLoc.empty()) {
+        std::cout << "No available positions found. Resetting to previous position." << std::endl;
+        availWallLoc.push_back(m_prevPos);
     }
 }
   

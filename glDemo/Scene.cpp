@@ -16,6 +16,7 @@
 #include "AIModel.h"
 #include "helper.h"
 #include "LevelGen.h"
+#include "SpotLight.h"
 
 
 Scene::Scene()
@@ -148,6 +149,10 @@ void Scene::Render()
 {
 	//TODO: Set up for the Opaque Render Pass will go here
 	//check out the example stuff back in main.cpp to see what needs setting up here
+
+	static float elapsedTime = 0.0f; // Accumulate elapsed time
+	elapsedTime += 0.016f; // Assuming ~60 FPS, adjust as needed
+
 	for (list<GameObject*>::iterator it = m_GameObjects.begin(); it != m_GameObjects.end(); it++)
 	{
 		if ((*it)->GetRP() & RP_OPAQUE)// TODO: note the bit-wise operation. Why?
@@ -155,6 +160,11 @@ void Scene::Render()
 			//set shader program using
 			GLuint SP = (*it)->GetShaderProg();
 			glUseProgram(SP);
+
+
+			GLint timeLocation;
+			Helper::SetUniformLocation(SP, "time", &timeLocation);
+			glUniform1f(timeLocation, elapsedTime);
 
 			//set up for uniform shader values for current camera
 			m_useCamera->SetRenderValues(SP);
@@ -217,7 +227,7 @@ void Scene::Render()
 
 		if ((*it)->GetRP() & RP_TRANSPARENT)
 		{
-			//Enable blending
+			// Enable blending
 			glEnable(GL_BLEND);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 			// Disable depth writes
@@ -225,8 +235,28 @@ void Scene::Render()
 			// Set shader program
 			GLuint SP = (*it)->GetShaderProg();
 			glUseProgram(SP);
+
+			GLint timeLocation;
+			Helper::SetUniformLocation(SP, "time", &timeLocation);
+			glUniform1f(timeLocation, elapsedTime);
+
+
 			// Set up uniform shader values for the current camera
-			m_useCamera->SetRenderValues(SP);
+			if (m_useCamera && m_useCamera->GetType() == "ARCBALL") {
+				ArcballCamera* arcballCam = dynamic_cast<ArcballCamera*>(m_useCamera);
+				if (arcballCam) {
+					glm::mat4 projectionMatrix = arcballCam->projectionTransform();
+					glm::mat4 viewMatrix = arcballCam->viewTransform();
+
+					GLint pLocation;
+					Helper::SetUniformLocation(SP, "viewMatrix", &pLocation);
+					glUniformMatrix4fv(pLocation, 1, GL_FALSE, (GLfloat*)&viewMatrix);
+
+					Helper::SetUniformLocation(SP, "projMatrix", &pLocation);
+					glUniformMatrix4fv(pLocation, 1, GL_FALSE, (GLfloat*)&projectionMatrix);
+				}
+			}
+
 			// Set up uniform shader values for lights and other global settings
 			SetShaderUniforms(SP);
 			// Set any uniform shader values for the actual model
@@ -552,4 +582,23 @@ void Scene::MoveCam(glm::vec3 direction)
 
 
 	}
+}
+void Scene::SpotLightsLookAt()  
+{  
+  if (!m_useCamera)  
+  {  
+      std::cerr << "No active camera to look at.\n";  
+      return;  
+  }  
+
+  glm::vec3 cameraPosition = m_useCamera->GetPos();  
+
+  for (auto it = m_Lights.begin(); it != m_Lights.end(); ++it)  
+  {  
+      SpotLight* spotLight = dynamic_cast<SpotLight*>(*it);  
+      if (spotLight)  
+      {  
+          spotLight->LookAt(cameraPosition);  
+      }  
+  }  
 }

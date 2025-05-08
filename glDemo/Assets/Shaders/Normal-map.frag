@@ -1,6 +1,6 @@
 #version 450 core
 
-layout(binding = 0) uniform sampler2D texture;
+layout(binding = 0) uniform sampler2D baseTexture;
 layout(binding = 1) uniform sampler2D normalMap;
 
 // Directional light model
@@ -53,10 +53,11 @@ void main()
     vec3 normal = texture(normalMap, scaledTexCoord.xy).rgb;
     normal = normal * 2.0 - 1.0;
     normal = normalize(TBN * normal);
-
+    normal = -normal;
     // Sample the base texture for the surface color
-    vec4 surfaceColor = texture(texture, scaledTexCoord.xy);
+    vec4 surfaceColor = texture(baseTexture, scaledTexCoord.xy);
     
+    float alpha = texture(baseTexture, scaledTexCoord.xy).a;
    
     // Initialize final color
     vec3 finalColor = vec3(0.0);
@@ -66,7 +67,7 @@ void main()
         vec3 totalAmbient = vec3(0.0);
         for (int i = 0; i < numDirLights; ++i) {
             vec3 lightDir = normalize(-dirLights[i].d_dir);
-            float l = max(dot(normal, lightDir), 0.0);
+            float l = max(dot(-normal, lightDir), 0.0);//flipped normal to show on correct side 
             vec3 diffuseColor = surfaceColor.rgb * dirLights[i].d_col * l;
             totalAmbient += dirLights[i].d_amb;
             finalColor += diffuseColor;
@@ -120,5 +121,5 @@ void main()
     }
 
     // Output the final color
-    FragColour = vec4(finalColor, surfaceColor.a);
+    FragColour = vec4(finalColor, alpha);
 }

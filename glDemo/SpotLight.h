@@ -9,6 +9,8 @@ struct spotLight {
 	glm::vec3 m_direction;
 	float m_cutoff;
 	float m_outerCutoff;
+	vec3 m_lookAt;
+
 };
 
 class SpotLight : public Light
@@ -20,6 +22,8 @@ public:
 	void Load(ifstream& _file)override;
 	void SetRenderValues(unsigned int _prog)override;
 	void SetSpotLights(unsigned int shaderProgram, const std::vector<spotLight>& lights);
+	void LookAt(const vec3& target);
+	vec3 m_lookAt;
 	std::vector<spotLight> lights;
 	vec3 m_direction;
 	vec3 m_attenuation;
