@@ -211,6 +211,8 @@
   <ItemGroup>
     <None Include="Assets\Shaders\flatColour.frag" />
     <None Include="Assets\Shaders\flatColour.vert" />
+    <None Include="Assets\Shaders\Fractal.frag" />
+    <None Include="Assets\Shaders\Fractal.vert" />
     <None Include="Assets\Shaders\Normal-map.frag" />
     <None Include="Assets\Shaders\Normal-map.vert" />
     <None Include="Assets\Shaders\Spiky.frag" />

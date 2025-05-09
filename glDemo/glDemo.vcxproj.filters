@@ -282,5 +282,11 @@
     <None Include="Assets\Shaders\worm.vert">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="Assets\Shaders\Fractal.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Assets\Shaders\Fractal.frag">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

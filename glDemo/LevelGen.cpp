@@ -74,6 +74,7 @@ LevelGen::LevelGen()
     
 
 	m_scale = glm::vec3(0.5f, 0.5f, 0.5f);
+    m_Floorscale = glm::vec3(0.5f, 0.2f, 0.5f);
     //floorLayout = {};
     /*glm::vec3 origin = glm::vec3(0.0f, 0.0f, 0.0f);
     glm::vec3 offset = glm::vec3(5.0f, 0.0f, 5.0f);
@@ -364,8 +365,8 @@ void LevelGen::Render()
         ExampleGO::addTexture(m_texList[2]);
         ExampleGO::addNormalMap(m_normList[1]);
         ExampleGO::setTexScale(m_ShaderProg, m_texScale);
-        m_worldMatrix = glm::translate(mat4(1.0), vec3(location));
-        m_worldMatrix = glm::scale(m_worldMatrix, glm::vec3(m_scale));
+        m_worldMatrix = glm::translate(mat4(1.0), vec3(location + vec3(0.0f,0.3f,0.0f)));
+        m_worldMatrix = glm::scale(m_worldMatrix, glm::vec3(m_Floorscale));
         ExampleGO::PreRender();
         ExampleGO::Render();
     }
@@ -391,4 +392,5 @@ void LevelGen::clearLevel()
 {
     locations1.clear();
     locations2.clear();
+	locations3.clear();
 }

@@ -43,6 +43,19 @@ void ExampleGO::Load(ifstream& _file)
 	   }
 	   normalLoaded = true;
    }
+   if (m_ShaderName == "FRACTAL") {
+
+	   StringHelp::Float(_file, "NOMAPS", m_NoMap);
+	   for (int i = 0; i < m_NoMap; ++i)
+	   {
+		   std::string NormName;
+		   StringHelp::String(_file, "NORMALMAP", NormName);
+		   m_normNames.push_back(NormName);
+
+	   }
+	   normalLoaded = true;
+	   FractalShader = true;
+   }
    else {
 	   
    }
@@ -107,7 +120,7 @@ void ExampleGO::Init(Scene* _scene)
 		addTexture(_scene->GetTexture(name)->GetTexID());
 		m_texList.push_back (_scene->GetTexture(name)->GetTexID());
 	}
-
+	
 	
 
 	if (normalLoaded) 
@@ -121,6 +134,12 @@ void ExampleGO::Init(Scene* _scene)
 		}
 
 	}
+	if (FractalShader) {
+		m_model->setBlendScale(m_ShaderProg, 0.5f);
+		m_model->setSecondaryTexture(m_texList[1]);
+		m_model->setTexture(m_texList[1], 2);
+	}
+	
 	
 }
 void ExampleGO::addTexture(GLuint _textureID)  

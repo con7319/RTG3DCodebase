@@ -29,7 +29,7 @@ public:
 
        
 private:
-   
+    glm::vec3 m_Floorscale;
 
     std::vector<vec3> locations1;
     std::vector<vec3> locations2;

@@ -44,6 +44,7 @@ protected:
 
 	string m_ShaderName, m_TexName, m_ModelName, m_normalName;
 	bool normalLoaded;
+	bool FractalShader;
 	float m_NoTex;
 	float m_NoMap;
 	GLuint m_texture;

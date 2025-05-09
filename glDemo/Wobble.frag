@@ -68,6 +68,7 @@ void main() {
 
    // Point light calculation
    if (numPointLights > 0) {
+   vec3 totalPointLightColor = vec3(0.0);
        for (int i = 0; i < numPointLights; ++i) {
            vec3 surfaceToLightVec = pointLights[i].p_pos - fragPosition;
            vec3 surfaceToLightNormalized = normalize(surfaceToLightVec);
@@ -77,16 +78,20 @@ void main() {
            float maxDistance = 8.0f;
 
            if (d < maxDistance) {
-               float kc = pointLights[i].p_attenuation.x;
-               float kl = pointLights[i].p_attenuation.y;
-               float kq = pointLights[i].p_attenuation.z;
-               float attenuation = 1.0 / (kc + kl * d + kq * d * d);
-               float smoothAttenuation = smoothstep(0.0, 1.0, attenuation);
-               vec3 PdiffuseColor = surfaceColor.rgb * pointLights[i].p_col * Pl * smoothAttenuation;
-               finalColor += PdiffuseColor;
-           }
-       }
-   }
+            float kc = pointLights[i].p_attenuation.x;
+            float kl = pointLights[i].p_attenuation.y;
+            float kq = pointLights[i].p_attenuation.z;
+            float attenuation = 1.0 / (kc + kl * d + kq * d * d);
+
+            vec3 PdiffuseColor = surfaceColor.rgb * pointLights[i].p_col * Pl * attenuation;
+            PdiffuseColor = clamp(PdiffuseColor, 0.0, 1.0); // Clamp to avoid over-brightness
+
+            totalPointLightColor += PdiffuseColor;
+        }
+    }
+    finalColor += totalPointLightColor;
+}
+
 
    // Spot light calculation
    if (numSpotLights > 0) {
@@ -111,5 +116,5 @@ void main() {
        }
    }
 
-   fragColor = vec4(finalColor, surfaceColor.a);
+   fragColor = vec4(finalColor, surfaceColor.a); // Fixed 'fragColour' to 'fragColor'
 }

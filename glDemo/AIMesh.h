@@ -19,6 +19,7 @@ class AIMesh {
 
 	GLuint				m_textureID = 0;
 	GLuint				m_normalMapID = 0;
+	GLuint				m_secondaryTextureID = 0;
 
 public:
 
@@ -35,4 +36,6 @@ public:
 	void setupTextures(unsigned int _prog);
 	void render();
 	void setTexScale(unsigned int _prog, float _scale);
+	void setBlendFactor(unsigned int _prog, float _blendFactor);
+	void setSecondaryTexture(GLuint textureID);
 };

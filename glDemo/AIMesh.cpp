@@ -146,12 +146,12 @@ void AIMesh::addNormalMap(std::string _filename, FREE_IMAGE_FORMAT _format)
 	m_normalMapID = loadTexture(_filename, _format);
 }
 
-//void AIMesh::setTexture(GLuint textureID, int unit) {
-//	glActiveTexture(GL_TEXTURE0 + unit);
-//	glBindTexture(GL_TEXTURE_2D, textureID);
-//	std::string uniformName = "texture" + std::to_string(unit);
-//	//glUniform1i(glGetUniformLocation(m_shaderProg, uniformName.c_str()), unit);
-//}
+void AIMesh::setTexture(GLuint textureID, int unit) {
+	glActiveTexture(GL_TEXTURE0 + unit);
+	glBindTexture(GL_TEXTURE_2D, textureID);
+	std::string uniformName = "texture" + std::to_string(unit);
+	//glUniform1i(glGetUniformLocation(m_shaderProg, uniformName.c_str()), unit);
+}
 
 // Rendering functions
 
@@ -163,20 +163,28 @@ void AIMesh::setupTextures(unsigned int _prog)
 
 			glEnable(GL_TEXTURE_2D);
 
+			// Bind base texture
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, m_textureID);
-			glUniform1i(glGetUniformLocation(_prog, "texture"), 0);
+			glUniform1i(glGetUniformLocation(_prog, "baseTexture"), 0);
 
-			//  *** normal mapping ***  check if normal map added - if so bind to texture unit 1
+			// Bind normal map
 			if (m_normalMapID != 0) {
-
 				glActiveTexture(GL_TEXTURE1);
 				glBindTexture(GL_TEXTURE_2D, m_normalMapID);
 				glUniform1i(glGetUniformLocation(_prog, "normalMap"), 1);
-
-				// Restore default
-				glActiveTexture(GL_TEXTURE0);
 			}
+
+			// Bind secondary texture
+			if (m_secondaryTextureID != 0) {
+				glActiveTexture(GL_TEXTURE2);
+				glBindTexture(GL_TEXTURE_2D, m_secondaryTextureID);
+				glUniform1i(glGetUniformLocation(_prog, "secondaryTexture"), 2);
+			}
+
+			// Restore default
+			glActiveTexture(GL_TEXTURE0);
+		
 		}
 	}
 }
@@ -195,5 +203,15 @@ void AIMesh::setTexScale(unsigned int _prog, float _scale)
 	glUniform1f(TexScale, _scale);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+}
+void AIMesh::setBlendFactor(unsigned int _prog, float _blendFactor)
+{
+	glUseProgram(_prog);
+	GLint blendFactor = glGetUniformLocation(_prog, "blendFactor");
+	glUniform1f(blendFactor, _blendFactor);
+}
+void AIMesh::setSecondaryTexture(GLuint textureID)
+{
+	m_secondaryTextureID = textureID;
 }
 

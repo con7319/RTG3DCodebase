@@ -54,8 +54,22 @@ void AIModel::setTexScale(unsigned int _prog, float _scale)
 
 
 }
-//void AIModel::setTexture(GLuint textureID, int unit) {
-//	if (m_AImesh) {
-//		m_AImesh->setTexture(textureID, unit);
-//	}
-//}
+void AIModel::setBlendScale(unsigned int _prog, float _scale)
+{
+	if (m_AImesh != nullptr)
+	{
+		m_AImesh->setBlendFactor(_prog, _scale);
+	}
+}
+void AIModel::setSecondaryTexture(GLuint textureID)
+{
+	if (m_AImesh != nullptr)
+	{
+		m_AImesh->addTexture(textureID);
+	}
+}
+void AIModel::setTexture(GLuint textureID, int unit) {
+	if (m_AImesh) {
+		m_AImesh->setTexture(textureID, unit);
+	}
+}
