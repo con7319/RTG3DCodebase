@@ -91,6 +91,8 @@ void ArcballCamera::Load(ifstream& _file)
 }
 #pragma region Accessor methods for stored values
 void ArcballCamera::Tick(float _dt, float _width, float _height) {
+
+	Camera::Tick(_dt, _width, _height);
 	// update the aspect ratio
 	m_aspect = _width / _height;
 	// update the view and projection matrices

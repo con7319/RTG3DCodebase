@@ -28,6 +28,7 @@ void GameObject::Load(ifstream& _file)
 	else if (m_renderName == "RP_TRANSPARENT") {
 		m_RP = RP_TRANSPARENT;
 	}
+
 	
 }
 

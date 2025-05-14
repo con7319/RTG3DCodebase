@@ -41,7 +41,7 @@ in vec3 fragNormal;
 in vec3 fragPosition;
 
 // Output color
-out vec4 fragColor;
+out vec4 fragColour;
 
 uniform mat4 modelMatrix;
 uniform mat4 viewMatrix;
@@ -53,7 +53,7 @@ void main() {
   vec4 surfaceColor = texture(baseTexture, fragTexCoord); 
 
    // Directional light calculation
-   vec3 finalColor = vec3(0.0);
+   vec3 finalColour = vec3(0.0);
    if (numDirLights > 0) {
        vec3 totalAmbient = vec3(0.0);
        for (int i = 0; i < numDirLights; ++i) {
@@ -61,9 +61,9 @@ void main() {
            float l = max(dot(N, lightDir), 0.0);
            vec3 diffuseColor = surfaceColor.rgb * dirLights[i].d_col * l;
            totalAmbient += dirLights[i].d_amb;
-           finalColor += diffuseColor;
+           finalColour += diffuseColor;
        }
-       finalColor += totalAmbient;
+       finalColour += totalAmbient;
    }
 
    // Point light calculation
@@ -89,7 +89,7 @@ void main() {
             totalPointLightColor += PdiffuseColor;
         }
     }
-    finalColor += totalPointLightColor;
+    finalColour += totalPointLightColor;
 }
 
 
@@ -112,9 +112,9 @@ void main() {
            float intensity = clamp((theta - spotLights[i].s_oCutoff) / epsilon, 0.0, 1.0);
 
            vec3 SdiffuseColor = surfaceColor.rgb * spotLights[i].s_col * Sl * attenuation * intensity;
-           finalColor += SdiffuseColor;
+           finalColour += SdiffuseColor;
        }
    }
 
-   fragColor = vec4(finalColor, surfaceColor.a); // Fixed 'fragColour' to 'fragColor'
+   fragColour = vec4(finalColour, surfaceColor.a);
 }

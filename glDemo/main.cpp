@@ -262,6 +262,9 @@ void keyboardHandler(GLFWwindow* _window, int _key, int _scancode, int _action, 
 			updateKeyState(m_keyState);
 			
 			break;
+		case GLFW_KEY_F:
+			g_Scene->SpotLightsLookAt();
+			break;
 		default:
 		{
 		}
@@ -288,12 +291,9 @@ void keyboardHandler(GLFWwindow* _window, int _key, int _scancode, int _action, 
 			dDown = false;
 			updateKeyState(m_keyState);
 			break;
-		case GLFW_KEY_F:
-			g_Scene->SpotLightsLookAt();
-			break;
 		default:
-		{
-		}
+			{
+			}
 		}
 	}
 }
