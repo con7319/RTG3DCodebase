@@ -92,6 +92,7 @@ LevelGen::~LevelGen()
 {
 	locations1.clear();
     locations2.clear();
+	locations3.clear();
 }
 
 

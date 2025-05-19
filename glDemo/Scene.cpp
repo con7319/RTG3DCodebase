@@ -27,6 +27,13 @@ Scene::~Scene()
 {
 	//TODO: We are being really naughty and not deleting everything as we finish
 	//what shoudl really go here and in similar places throughout the code base?
+	m_GameObjects.clear();
+	m_Cameras.clear();
+	m_Lights.clear();
+	m_Models.clear();
+	m_Textures.clear();
+	m_Shaders.clear();
+
 }
 
 //tick all my Game Objects, lights and cameras
